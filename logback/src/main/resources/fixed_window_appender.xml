@@ -1,0 +1,30 @@
+<include>
+    <!--
+        RollingFileAppender
+        与 RollingFileAppender 进行交互的有两个重要的子组件。
+        第一个是 RollingPolicy，它负责日志轮转的功能。另一个是 TriggeringPolicy，它负责日志轮转的时机。
+        所以 RollingPolicy 负责发生什么，TriggeringPolicy 负责什么时候发生。
+    -->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 要写入文件的名称。如果文件不存在，则新建。 -->
+        <file>${LOG_DIR:-default_logs}/logback.log</file>
+        <immediateFlush>false</immediateFlush>
+        <encoder>
+            <pattern> %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+        <!-- SizeAndTimeBasedRollingPolicy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <!-- 按天轮转 -->
+            <fileNamePattern>logback.%i.txt</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>10</maxIndex>
+        </rollingPolicy>
+
+        <!-- 每 5M 生成一个新文件，编号从 1 到 10 -->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>5MB</maxFileSize>
+        </triggeringPolicy>
+
+    </appender>
+</include>

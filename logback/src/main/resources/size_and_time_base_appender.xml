@@ -1,0 +1,38 @@
+<include>
+    <!--
+        RollingFileAppender
+        与 RollingFileAppender 进行交互的有两个重要的子组件。
+        第一个是 RollingPolicy，它负责日志轮转的功能。另一个是 TriggeringPolicy，它负责日志轮转的时机。
+        所以 RollingPolicy 负责发生什么，TriggeringPolicy 负责什么时候发生。
+    -->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 要写入文件的名称。如果文件不存在，则新建。 -->
+        <file>${LOG_DIR:-default_logs}/logback.log</file>
+        <immediateFlush>false</immediateFlush>
+        <encoder>
+            <pattern> %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+        <!-- SizeAndTimeBasedRollingPolicy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天轮转 -->
+            <fileNamePattern>%d{yyyy-MM-dd}/logback.%i.txt</fileNamePattern>
+
+            <!-- 在还没到周期轮转之前，日志文件达到了 maxFileSize，会进行归档，递增索引从 0 开始 -->
+            <maxFileSize>100MB</maxFileSize>
+
+            <!-- 如：按日轮转，代表保存多少天的；按月轮转，代表保存几个月的 -->
+            <maxHistory>30</maxHistory>
+
+            <!--
+                这个可选属性用来控制所有归档文件总的大小。当达到这个大小后，旧的归档文件将会被异步的删除。
+                使用这个属性时还需要设置 maxHistory 属性。而且，maxHistory 将会被作为第一条件，该属性作为第二条件。
+            -->
+            <totalSizeCap>3GB</totalSizeCap>
+
+            <!-- 如果设置为 true，那么在 appender 启动的时候，归档文件将会被删除。默认的值为 false。 -->
+            <cleanHistoryOnStart>false</cleanHistoryOnStart>
+        </rollingPolicy>
+
+    </appender>
+</include>

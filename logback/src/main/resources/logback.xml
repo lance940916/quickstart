@@ -1,0 +1,79 @@
+<configuration debug="false" scan="false" packagingData="false">
+
+    <!-- =============================================================== -->
+    <!-- ======================= 属性配置 ========================== -->
+    <!-- =============================================================== -->
+
+    <!-- 可以把变量放在这里 -->
+<!--    <property name="LOG_DIR" value="logs" scope="local"/>-->
+    <!-- 也可以把变量放在 properties 文件中，可以是 file/resource/url -->
+<!--    <property resource="log.properties"/>-->
+
+
+    <!-- =============================================================== -->
+    <!-- ======================= Appender 配置 ========================== -->
+    <!-- =============================================================== -->
+    <!--
+        Appender 是写日志的组件
+    -->
+
+    <!--
+        控制台 Appender
+        1. ${HOSTNAME} 和 ${CONTEXT_NAME} 是自动配置的变量
+        2 "%black"，"%red"，"%green"，"%yellow"，"%blue"，"%magenta","%cyan", "%white", "%gray", "%boldRed",
+            "%boldGreen", "%boldYellow", "%boldBlue", "%boldMagenta""%boldCyan", "%boldWhite", "%highlight"
+    -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 默认为 ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <encoder>
+            <pattern>[${HOSTNAME}] [%yellow(${CONTEXT_NAME})] %X{name} %blue(%-5level) %logger{36} - %msg%n</pattern>
+        </encoder>
+        <withJansi>true</withJansi>
+    </appender>
+
+    <!--
+        文件 Appender
+        1. ${LOG_DIR:-default_logs} 使用 :- 来指定默认值
+    -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <!-- 要写入文件的名称。如果文件不存在，则新建。 -->
+        <file>${LOG_DIR:-default_logs}/logback.log</file>
+        <!-- 默认为 true -->
+        <append>true</append>
+        <!-- 默认为 true -->
+        <immediateFlush>false</immediateFlush>
+        <encoder>
+            <pattern> %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 基于 TimeBasedRollingPolicy 的 RollingAppender -->
+<!--    <include resource="time_base_appender.xml"/>-->
+
+    <!-- 基于 SizeAndTimeBasedRollingPolicy 的 RollingAppender -->
+<!--    <include resource="size_and_time_base_appender.xml"/>-->
+
+    <!-- 基于 FixedWindowRollingPolicy 的 RollingAppender -->
+    <!--    <include resource="size_and_time_base_appender.xml"/>-->
+
+
+    <!-- =============================================================== -->
+    <!-- ============================ Logger 配置 ====================== -->
+    <!-- =============================================================== -->
+
+    <!-- 限制 LogbackApp 的日志等级，默认的 appender-ref 为 ROOT 的 appender-ref -->
+    <logger name="com.snailwu.logback.LogbackApp" level="info"/>
+
+    <!--
+        因为 root 是 logger 的所有祖先，所以在不加 additivity=false 的时候也会打印到 root 的 appender-ref 中
+     -->
+    <logger name="com.snailwu.logback.FileLogApp" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- ROOT logger -->
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
