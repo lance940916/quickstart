@@ -4,11 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.snailwu</groupId>
-    <artifactId>snailwu</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>demo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>snailwu</name>
+    <name>demo</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,7 +15,16 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
-        <finalName>snailwu</finalName>
+        <finalName>demo</finalName>
     </build>
 </project>

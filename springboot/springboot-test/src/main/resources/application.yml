@@ -1,0 +1,12 @@
+---
+spring:
+  profiles: dev
+db:
+  # 必须加空格
+  name: dev
+
+---
+spring:
+  profiles: test
+db:
+  name: test
