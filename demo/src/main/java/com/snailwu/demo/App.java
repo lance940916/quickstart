@@ -7,7 +7,8 @@ import java.util.ArrayList;
  */
 public class App {
     public static void main(String[] args) {
-        ArrayList<String> list = new ArrayList<>();
-        System.out.println(list instanceof ArrayList);
+        System.out.println("-0-20200302120241-87I3JYTA5H0UCPKBS9V4".length());
+        String s = "user-o9jkh5WnaTjgZpy-HimytiW-h3sA-0-20200302120241-87I3JYTA5H0UCPKBS9V4";
+
     }
 }
