@@ -4,16 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.snailwu</groupId>
-    <artifactId>spring</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>spring-security</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
-    <modules>
-        <module>spring-test</module>
-        <module>spring-security</module>
-    </modules>
-
-    <name>spring</name>
+    <name>spring-security</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,7 +18,6 @@
     </properties>
 
     <dependencies>
-
         <!-- 测试框架 -->
         <dependency>
             <groupId>junit</groupId>
@@ -99,6 +93,26 @@
             <artifactId>spring-aspects</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
         <!-- 日志 -->
         <dependency>
@@ -164,7 +178,6 @@
     </dependencies>
 
     <build>
-        <finalName>spring</finalName>
+        <finalName>spring-security</finalName>
     </build>
-
 </project>
