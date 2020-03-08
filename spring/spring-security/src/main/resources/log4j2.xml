@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration name="baseConf" status="warn" monitorInterval="30">
 
-    <Properties>
-        <Property name="ConsolePattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %l: %msg%n</Property>
-    </Properties>
+    <properties>
+        <property name="logPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level [%t] %l: %msg%n"/>
+    </properties>
 
-    <Appenders>
+    <appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${ConsolePattern}"/>
+            <PatternLayout pattern="${logPattern}"/>
         </Console>
-    </Appenders>
+    </appenders>
 
-    <Loggers>
-        <Root level="info">
-            <AppenderRef ref="Console"/>
-        </Root>
-    </Loggers>
+    <loggers>
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
 
 </Configuration>
