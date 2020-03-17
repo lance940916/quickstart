@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
-//        MyBatisConfig.class
+        MyBatisConfig.class
 })
 public class RootConfig {
 }

@@ -9,6 +9,15 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${ConsolePattern}"/>
         </Console>
+
+<!--        <RollingFile name="RollingFile">-->
+<!--            <filename>/data/log/website/website.log</filename>-->
+<!--            <filePattern>/data/log/website/$${date:yyyy-MM}/website.log_%d{yyyy-MM-dd}.log.tar.gz</filePattern>-->
+<!--            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n"/>-->
+<!--            <Policies>-->
+<!--                <CronTriggeringPolicy schedule="0/5 * * * * ?" />-->
+<!--            </Policies>-->
+<!--        </RollingFile>-->
     </Appenders>
 
     <Loggers>

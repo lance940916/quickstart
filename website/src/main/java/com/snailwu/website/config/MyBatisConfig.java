@@ -4,10 +4,13 @@ import com.alibaba.druid.pool.DruidDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mariadb.jdbc.Driver;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -22,8 +25,12 @@ import java.sql.SQLException;
  */
 @Slf4j
 @Configuration
-@MapperScan("mapper")
+@MapperScan("com.snailwu.website.mapper")
+@PropertySource("classpath:db.properties")
 public class MyBatisConfig {
+
+    @javax.annotation.Resource
+    private Environment env;
 
     /**
      * 数据库连接池
@@ -31,15 +38,16 @@ public class MyBatisConfig {
     @Bean(initMethod = "init", destroyMethod = "close")
     public DruidDataSource dataSource() throws SQLException {
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUsername("snailwu");
-        dataSource.setPassword("snailwu9595");
-        dataSource.setUrl("jdbc://mariadb://108.160.139.89:3306/website");
+        dataSource.setUsername(env.getRequiredProperty("db.username"));
+        dataSource.setPassword(env.getRequiredProperty("db.password"));
+        dataSource.setUrl(env.getRequiredProperty("db.jdbcUrl"));
+        dataSource.setDriverClassName(Driver.class.getName());
         // 初始化连接数量
-        dataSource.setInitialSize(1);
+        dataSource.setInitialSize(env.getRequiredProperty("db.initialSize", Integer.class));
         // 最大连接数量
-        dataSource.setMaxActive(3);
+        dataSource.setMaxActive(env.getRequiredProperty("db.maxActive", Integer.class));
         // 最小连接数量
-        dataSource.setMinIdle(1);
+        dataSource.setMinIdle(env.getRequiredProperty("db.minIdle", Integer.class));
 //        dataSource.setFilters("filter:wall");
 //        dataSource.setFilters("filter:log4j");
         return dataSource;
