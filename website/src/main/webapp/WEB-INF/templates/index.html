@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>蜗牛大师</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="keywords" content="蜗牛大师,snail,博客">
     <meta name="description" content="蜗牛大师的个人主页">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
-    <link href="./statics/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/statics/css/vendor/bootstrap/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="./statics/css/flat-ui.css" rel="stylesheet">
+    <link th:href="@{/statics/css/flat-ui.css}" type="text/css" rel="stylesheet">
 
-    <link rel="shortcut icon" href="./statics/img/Watches.ico">
+    <link rel="shortcut icon" th:href="@{/statics/img/Watches.ico}">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
-    <script src="./statics/js/vendor/html5shiv.js"></script>
-    <script src="./statics/js/vendor/respond.min.js"></script>
+    <script th:src="@{/statics/js/vendor/html5shiv.js}"></script>
+    <script th:src="@{/statics/js/vendor/respond.min.js}"></script>
     <![endif]-->
 </head>
 <body>
