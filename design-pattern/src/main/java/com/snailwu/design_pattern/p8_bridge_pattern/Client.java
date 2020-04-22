@@ -5,7 +5,6 @@ package com.snailwu.design_pattern.p8_bridge_pattern;
  * @date: 2020/1/19 5:21 下午
  */
 public class Client {
-
     public static void main(String[] args) {
         AbstractDrawShape squareShape = new DrawSquareShape(new YellowColor());
         squareShape.draw();
@@ -13,5 +12,4 @@ public class Client {
         AbstractDrawShape roundShape = new DrawRoundShape(new OrangeColor());
         roundShape.draw();
     }
-
 }
