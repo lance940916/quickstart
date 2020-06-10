@@ -11,6 +11,7 @@
 
     <loggers>
 
+        <!-- 打印 SQL 语句 -->
         <Logger name="com.snailwu.mybatis" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>

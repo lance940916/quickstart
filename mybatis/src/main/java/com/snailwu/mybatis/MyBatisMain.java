@@ -29,25 +29,25 @@ public class MyBatisMain {
     private static final Logger log = LoggerFactory.getLogger(MyBatisMain.class);
     public static void main(String[] args) throws InterruptedException {
         // 数据库连接池
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test");
-        dataSource.setUsername("root");
-        dataSource.setPassword("admin");
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        log.info("数据库配置");
-
-        // MyBatis
-        TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("dev", transactionFactory, dataSource);
-
-        // 配置参考 https://mybatis.org/mybatis-3/zh/configuration.html#settings
-        Configuration configuration = new Configuration(environment);
-        configuration.setLogImpl(Slf4jImpl.class);
-        configuration.addMapper(MbgTableMapper.class);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
-
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        MbgTableMapper mbgTableMapper = sqlSession.getMapper(MbgTableMapper.class);
+//        HikariDataSource dataSource = new HikariDataSource();
+//        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test");
+//        dataSource.setUsername("root");
+//        dataSource.setPassword("admin");
+//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        log.info("数据库配置");
+//
+//        // MyBatis
+//        TransactionFactory transactionFactory = new JdbcTransactionFactory();
+//        Environment environment = new Environment("dev", transactionFactory, dataSource);
+//
+//        // 配置参考 https://mybatis.org/mybatis-3/zh/configuration.html#settings
+//        Configuration configuration = new Configuration(environment);
+//        configuration.setLogImpl(Slf4jImpl.class);
+//        configuration.addMapper(MbgTableMapper.class);
+//        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+//
+//        SqlSession sqlSession = sqlSessionFactory.openSession();
+//        MbgTableMapper mbgTableMapper = sqlSession.getMapper(MbgTableMapper.class);
 
         // 动态 SQL
         SelectStatementProvider statementProvider =
@@ -57,7 +57,7 @@ public class MyBatisMain {
                 .build()
                 .render(RenderingStrategies.MYBATIS3);
         System.out.println(statementProvider.getSelectStatement());
-        mbgTableMapper.selectMany(statementProvider);
+//        mbgTableMapper.selectMany(statementProvider);
 
     }
 }
