@@ -15,6 +15,7 @@
         <module>springboot</module>
         <module>log4j2</module>
         <module>utils</module>
+        <module>mybatis</module>
     </modules>
 
     <name>snailwu</name>

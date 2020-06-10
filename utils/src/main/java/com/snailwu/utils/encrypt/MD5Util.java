@@ -1,4 +1,4 @@
-package com.snailwu.utils;
+package com.snailwu.utils.encrypt;
 
 /**
  * @author: 吴庆龙

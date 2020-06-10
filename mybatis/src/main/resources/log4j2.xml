@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="baseConf" status="warn" monitorInterval="30">
+
+    <appenders>
+        <Console name="Console">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+        </Console>
+    </appenders>
+
+    <loggers>
+
+        <Logger name="com.snailwu.mybatis" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <root level="info">
+            <AppenderRef ref="Console"/>
+        </root>
+
+    </loggers>
+
+</Configuration>
