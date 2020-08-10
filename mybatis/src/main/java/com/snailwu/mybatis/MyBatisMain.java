@@ -13,9 +13,14 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import static com.snailwu.mybatis.dao.MbgTableDynamicSqlSupport.*;
 import static com.snailwu.mybatis.dao.MbgTableDynamicSqlSupport.mbgTable;
@@ -49,14 +54,19 @@ public class MyBatisMain {
 //        SqlSession sqlSession = sqlSessionFactory.openSession();
 //        MbgTableMapper mbgTableMapper = sqlSession.getMapper(MbgTableMapper.class);
 
-        // 动态 SQL
-        SelectStatementProvider statementProvider =
-                select(count())
-                .from(mbgTable)
-                .where(id, isNotNull())
-                .build()
-                .render(RenderingStrategies.MYBATIS3);
-        System.out.println(statementProvider.getSelectStatement());
+
+//        SelectStatementProvider statementProvider =
+//                select(count())
+//                        .from(mbgTable)
+//                        .where(id, isNotNull(), and(id, isEqualTo(1)))
+//                        .or(id, isEqualTo(2))
+//                        .build()
+//                        .render(RenderingStrategies.MYBATIS3);
+//        System.out.println(statementProvider.getSelectStatement());
+
+        System.out.println(SelectDSLCompleter.allRows());
+
+//        long end = System.currentTimeMillis();
 //        mbgTableMapper.selectMany(statementProvider);
 
     }

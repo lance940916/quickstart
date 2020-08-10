@@ -3,6 +3,7 @@ package com.snailwu.spring.security.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @author: 吴庆龙
@@ -11,5 +12,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @Configuration
 @ComponentScan("com.snailwu.spring.security.controller")
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
+
 }
