@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>demo</module>
+        <module>untitle</module>
         <module>design-pattern</module>
         <module>spring</module>
         <module>springboot</module>

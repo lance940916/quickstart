@@ -11,7 +11,6 @@
     <modules>
         <module>spring-test</module>
         <module>spring-security</module>
-        <module>spring-rest</module>
     </modules>
 
     <name>spring</name>
