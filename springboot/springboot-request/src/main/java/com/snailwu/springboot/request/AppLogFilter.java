@@ -1,0 +1,117 @@
+package com.snailwu.springboot.request;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author 吴庆龙
+ * @date 2020/9/22 1:15 下午
+ */
+public class AppLogFilter extends OncePerRequestFilter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppLogFilter.class);
+
+    /**
+     * 需要打印请求体的 ContentType
+     */
+    private static final Set<String> REQUEST_CONTENT_TYPE_SET = new HashSet<>();
+    private static final Set<String> RESPONSE_CONTENT_TYPE_SET = new HashSet<>();
+
+    public AppLogFilter() {
+        REQUEST_CONTENT_TYPE_SET.add("application/json");
+        REQUEST_CONTENT_TYPE_SET.add("application/javascript");
+        REQUEST_CONTENT_TYPE_SET.add("application/xml");
+        REQUEST_CONTENT_TYPE_SET.add("multipart/form-data");
+        REQUEST_CONTENT_TYPE_SET.add("application/x-www-form-urlencoded");
+        REQUEST_CONTENT_TYPE_SET.add("text/plain");
+        REQUEST_CONTENT_TYPE_SET.add("text/html");
+        LOGGER.info("初始化 AppLogFilter.INCLUDE_CONTENT_TYPE_SET 成功");
+
+        RESPONSE_CONTENT_TYPE_SET.add("application/json");
+        RESPONSE_CONTENT_TYPE_SET.add("text/plain");
+        LOGGER.info("初始化 AppLogFilter.RESPONSE_CONTENT_TYPE_SET 成功");
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        LOGGER.info("经过Filter");
+        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+
+        try {
+            super.doFilter(requestWrapper, responseWrapper, chain);
+        } finally {
+            // 请求中编码
+            String characterEncoding = requestWrapper.getCharacterEncoding();
+
+            // URL参数 + form-data文本参数 + x-www-form-urlencoded参数
+            Map<String, String> urlParamMap = new HashMap<>();
+            Map<String, String[]> parameterMap = requestWrapper.getParameterMap();
+            for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+                String name = entry.getKey();
+                String[] valueArray = entry.getValue();
+                if (valueArray == null || valueArray.length == 0) {
+                    continue;
+                }
+                String value = StringUtils.arrayToDelimitedString(valueArray, ",");
+                name = URLDecoder.decode(name, characterEncoding);
+                value = URLDecoder.decode(value, characterEncoding);
+                urlParamMap.put(name, value);
+            }
+
+            // 请求体文本内容
+            String realRequestBody = null;
+            String requestContentType = requestWrapper.getContentType();
+            if (!StringUtils.isEmpty(requestContentType)) {
+                for (String ct : REQUEST_CONTENT_TYPE_SET) {
+                    if (requestContentType.startsWith(ct)) {
+                        byte[] byteArray = requestWrapper.getContentAsByteArray();
+                        realRequestBody = StringUtils.trimAllWhitespace(new String(byteArray));
+                        break;
+                    }
+                }
+            }
+
+            // 响应内容
+            String realResponseBody = null;
+            String responseContentType = responseWrapper.getContentType();
+            if (!StringUtils.isEmpty(responseContentType)) {
+                for (String ct : RESPONSE_CONTENT_TYPE_SET) {
+                    if (responseContentType.startsWith(ct)) {
+                        byte[] byteArray = responseWrapper.getContentAsByteArray();
+                        realResponseBody = StringUtils.trimAllWhitespace(new String(byteArray));
+                        break;
+                    }
+                }
+            }
+
+            LOGGER.info("=================================== START ===================================");
+            LOGGER.info("请求地址\t:{}", requestWrapper.getRequestURI());
+            LOGGER.info("请求内容类型\t:{}", requestWrapper.getContentType());
+            LOGGER.info("请求方法\t:{}", requestWrapper.getMethod());
+            LOGGER.info("请求参数\t:{}", urlParamMap);
+            LOGGER.info("请求体内容\t:{}", realRequestBody);
+            LOGGER.info("响应内容类型\t:{}", responseContentType);
+            LOGGER.info("响应内容\t:{}", realResponseBody);
+            LOGGER.info("===================================  END  ===================================");
+
+            responseWrapper.copyBodyToResponse();
+        }
+    }
+
+}

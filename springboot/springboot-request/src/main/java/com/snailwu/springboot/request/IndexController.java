@@ -94,4 +94,16 @@ public class IndexController {
         return "Hello Spring.";
     }
 
+    @PostMapping("/raw_string")
+    public String rawString(@RequestBody String content, HttpServletRequest request) {
+        System.out.println("ContentType: " + request.getContentType());
+        System.out.println("请求参数：" + content);
+        return "Hello Spring.";
+    }
+
+    @GetMapping("/redirect/url_param")
+    public String redirectUrlParam() {
+        return "{}";
+    }
+
 }

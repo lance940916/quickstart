@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>untitle</module>
         <module>design-pattern</module>
         <module>spring</module>
         <module>springboot</module>
@@ -19,6 +18,8 @@
         <module>quartz</module>
         <module>ehcache</module>
         <module>maven-archetype</module>
+        <module>untitled</module>
+        <module>snail-oss-desktop</module>
     </modules>
 
     <name>snailwu</name>
