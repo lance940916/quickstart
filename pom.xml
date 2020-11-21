@@ -20,6 +20,9 @@
         <module>maven-archetype</module>
         <module>untitled</module>
         <module>snail-oss-desktop</module>
+        <module>zookeeper</module>
+        <module>redis</module>
+        <module>rabbitmq</module>
     </modules>
 
     <name>snailwu</name>

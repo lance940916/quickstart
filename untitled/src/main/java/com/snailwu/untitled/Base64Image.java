@@ -27,7 +27,6 @@ public class Base64Image {
         ByteArrayInputStream bais = new ByteArrayInputStream(decode);
 
 
-
     }
 
 }

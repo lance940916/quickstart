@@ -1,5 +1,6 @@
 package com.snailwu.springboot.request;
 
+import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -49,13 +50,28 @@ public class AppLogFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        LOGGER.info("经过Filter");
+        long startTs = System.currentTimeMillis();
+
+        // 将 REQUEST_ID 设置到请求参数中
+        String requestId = request.getHeader("req-id");
+        if (StringUtils.isEmpty(requestId)) {
+            // 生成唯一请求号
+            requestId = "";
+        }
+        request.setAttribute("req-id", requestId);
+
+        // 在日志中打印出来便于查问题
+        ThreadContext.put("LOG_ID", requestId);
+
+        // 封装
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
-
         try {
             super.doFilter(requestWrapper, responseWrapper, chain);
         } finally {
+            // 结束计时，计算耗时
+            long costTs = System.currentTimeMillis() - startTs;
+
             // 请求中编码
             String characterEncoding = requestWrapper.getCharacterEncoding();
 
@@ -100,16 +116,25 @@ public class AppLogFilter extends OncePerRequestFilter {
                 }
             }
 
-            LOGGER.info("=================================== START ===================================");
-            LOGGER.info("请求地址\t:{}", requestWrapper.getRequestURI());
-            LOGGER.info("请求内容类型\t:{}", requestWrapper.getContentType());
-            LOGGER.info("请求方法\t:{}", requestWrapper.getMethod());
-            LOGGER.info("请求参数\t:{}", urlParamMap);
-            LOGGER.info("请求体内容\t:{}", realRequestBody);
-            LOGGER.info("响应内容类型\t:{}", responseContentType);
-            LOGGER.info("响应内容\t:{}", realResponseBody);
+            // 获取客户端的IP
+            String ipAddr = IpUtil.getClientIpAddr(request);
+
+            LOGGER.info("=================================== BEGIN ===================================");
+            LOGGER.info("Req-URI           :{}", requestWrapper.getRequestURI());
+            LOGGER.info("Req-Content-Type  :{}", requestWrapper.getContentType());
+            LOGGER.info("Req-Method        :{}", requestWrapper.getMethod());
+            LOGGER.info("Req-IpAddr        :{}", ipAddr);
+            LOGGER.info("Req-Param         :{}", urlParamMap);
+            LOGGER.info("Req-Body          :{}", realRequestBody);
+            LOGGER.info("Resp-Content-Type :{}", responseContentType);
+            LOGGER.info("Resp-Body         :{}", realResponseBody);
+            LOGGER.info("Cost-Time         :{}毫秒", costTs);
             LOGGER.info("===================================  END  ===================================");
 
+            // 清空 ThreadContext
+            ThreadContext.clearAll();
+
+            // 写入响应消息到客户端
             responseWrapper.copyBodyToResponse();
         }
     }
