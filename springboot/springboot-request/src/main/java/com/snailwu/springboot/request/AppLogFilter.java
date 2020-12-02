@@ -117,7 +117,7 @@ public class AppLogFilter extends OncePerRequestFilter {
             }
 
             // 获取客户端的IP
-            String ipAddr = IpUtil.getClientIpAddr(request);
+            String ipAddr = RequestIpUtil.ipAddress(request);
 
             LOGGER.info("=================================== BEGIN ===================================");
             LOGGER.info("Req-URI           :{}", requestWrapper.getRequestURI());

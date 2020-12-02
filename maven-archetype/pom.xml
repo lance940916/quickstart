@@ -10,7 +10,7 @@
     <name>${project.artifactId}</name>
 
     <modules>
-        <module>snail-quickstart</module>
+        <module>snail-java</module>
         <module>snail-ssm</module>
     </modules>
 
