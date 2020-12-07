@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="redis" />
+        <module name="spring-test" />
+        <module name="rabbitmq" />
+        <module name="spring-security" />
+        <module name="zookeeper" />
+        <module name="springboot-request" />
+        <module name="snail-ssm" />
+        <module name="ehcache" />
+        <module name="mybatis" />
+        <module name="quartz" />
+        <module name="log4j2" />
+        <module name="apollo" />
+        <module name="springboot-test" />
+        <module name="snail-java" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="apollo" target="1.8" />
+      <module name="design-pattern" target="1.8" />
+      <module name="ehcache" target="1.8" />
+      <module name="image-system" target="1.8" />
+      <module name="imagea-dmin" target="1.8" />
+      <module name="log4j2" target="1.8" />
+      <module name="maven-archetype" target="1.8" />
+      <module name="maven-multi-profile" target="1.8" />
+      <module name="mybatis" target="1.8" />
+      <module name="quartz" target="1.7" />
+      <module name="rabbitmq" target="1.8" />
+      <module name="redis" target="1.8" />
+      <module name="snail-java" target="1.8" />
+      <module name="snail-oss-desktop" target="1.8" />
+      <module name="snail-quickstart" target="1.8" />
+      <module name="snail-ssm" target="1.8" />
+      <module name="snailwu-archetype-quickstart" target="1.8" />
+      <module name="spring" target="1.8" />
+      <module name="spring-logback" target="1.8" />
+      <module name="spring-rest" target="1.8" />
+      <module name="spring-security" target="1.8" />
+      <module name="spring-test" target="1.8" />
+      <module name="springboot" target="1.8" />
+      <module name="springboot-request" target="1.8" />
+      <module name="springboot-test" target="1.8" />
+      <module name="untitle" target="1.8" />
+      <module name="untitled" target="1.8" />
+      <module name="utils" target="1.8" />
+      <module name="webhook" target="1.8" />
+      <module name="website" target="1.8" />
+      <module name="zookeeper" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="apollo" options="-parameters" />
+      <module name="springboot-request" options="-parameters" />
+      <module name="springboot-test" options="-parameters" />
+      <module name="webhook" options="-parameters" />
+    </option>
+  </component>
+</project>
