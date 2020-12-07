@@ -1,28 +1,0 @@
-
-d
-java:S1192"NDefine a constant instead of duplicating this literal "ContentType: " 7 times.(‡çÃ–
-N	java:S106E"9Replace this use of System.out or System.err by a logger.(âªƒ
-N	java:S106D"9Replace this use of System.out or System.err by a logger.(È”¿æ
-N	java:S106]"9Replace this use of System.out or System.err by a logger.(úáÑƒ
-N	java:S1067"9Replace this use of System.out or System.err by a logger.(ö—Ğ–
-i
-java:S1192"NDefine a constant instead of duplicating this literal "Hello Spring." 7 times.(ÆÌ½Šıÿÿÿÿ
-Q	java:S125"<This block of commented-out lines of code should be removed.(£­áÄ
-T	java:S106d"9Replace this use of System.out or System.err by a logger.(—úú[8˜Ÿï¬Ë.
-N	java:S106&"9Replace this use of System.out or System.err by a logger.(‡çÃ–
-u
-java:S4144["XUpdate this method so that its implementation is not identical to "urlParam" on line 25.(òêØ8Ä°·¬Ë.
-N	java:S106Q"9Replace this use of System.out or System.err by a logger.(È”¿æ
-N	java:S106\"9Replace this use of System.out or System.err by a logger.(È”¿æ
-N	java:S106"9Replace this use of System.out or System.err by a logger.(‡çÃ–
-N	java:S106"9Replace this use of System.out or System.err by a logger.(úáÑƒ
-n
-java:S4144P"XUpdate this method so that its implementation is not identical to "urlParam" on line 25.(•äæ”
-N	java:S1065"9Replace this use of System.out or System.err by a logger.(âªƒ
-S	java:S1066"9Replace this use of System.out or System.err by a logger.(úŞ½şÿÿÿÿ
-N	java:S106R"9Replace this use of System.out or System.err by a logger.(úáÑƒ
-f
-java:S1192"PDefine a constant instead of duplicating this literal "è¯·æ±‚å‚æ•°ï¼š" 5 times.(úáÑƒ
-U	java:S106c"9Replace this use of System.out or System.err by a logger.(È”¿æ8šï¬Ë.
-N	java:S1064"9Replace this use of System.out or System.err by a logger.(È”¿æ
-S	java:S106'"9Replace this use of System.out or System.err by a logger.(ÀõÜ’şÿÿÿÿ
