@@ -1,4 +1,4 @@
-package com.snailwu.maven.archetype.controller;
+package com.snailwu.rabbitmq.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IndexController {
 
-    @GetMapping(value = {"/", "/index"})
+    @GetMapping("/index")
     public String index() {
         return "Hello Spring.";
     }

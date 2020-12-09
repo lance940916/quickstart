@@ -32,7 +32,7 @@
 
         <!-- 数据库连接 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/snail_job?useSSL=false"
+                        connectionURL="jdbc:mysql://localhost:3306/xxx?useSSL=false"
                         userId="root"
                         password="admin">
         </jdbcConnection>
