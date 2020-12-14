@@ -11,7 +11,8 @@
     <modules>
         <module>spring-test</module>
         <module>spring-security</module>
-        <module>spring-rabbitmq</module>
+        <module>spring-rabbitmq3.6.5</module>
+        <module>spring-rabbitmq3.8.9</module>
     </modules>
 
     <name>${project.artifactId}</name>
