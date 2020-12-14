@@ -1,5 +1,6 @@
 package com.snailwu.rabbitmq.config;
 
+import org.springframework.lang.NonNull;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -16,7 +17,7 @@ import static javax.servlet.DispatcherType.REQUEST;
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(@NonNull ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
 
         servletContext
@@ -36,6 +37,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     }
 
     @Override
+    @NonNull
     protected String[] getServletMappings() {
         return new String[]{"/*"};
     }

@@ -21,7 +21,12 @@ public class TextMessageConverter extends AbstractMessageConverter {
      */
     @Override
     protected Message createMessage(Object object, MessageProperties messageProperties) {
-        return null;
+        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN);
+        messageProperties.setContentEncoding(StandardCharsets.UTF_8.name());
+        String message = (String) object;
+        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
+        messageProperties.setContentLength(bytes.length);
+        return new Message(bytes, messageProperties);
     }
 
     /**
