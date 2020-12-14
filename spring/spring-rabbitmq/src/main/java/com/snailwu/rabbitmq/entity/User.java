@@ -1,10 +1,13 @@
 package com.snailwu.rabbitmq.entity;
 
+import java.io.Serializable;
+
 /**
  * @author 吴庆龙
  * @date 2020/12/11 下午2:13
  */
-public class User {
+public class User implements Serializable {
+
 
     private String name;
     private Integer age;

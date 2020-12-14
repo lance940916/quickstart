@@ -64,7 +64,7 @@ public class IndexController {
      */
     @PostMapping("/multipart_form_data1")
     public String multipartFormData1(UserVO userVO,
-                                    HttpServletRequest request) {
+                                     HttpServletRequest request) {
         System.out.println("ContentType: " + request.getContentType());
         System.out.println("请求参数: " + userVO);
         return "Hello Spring.";

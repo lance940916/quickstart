@@ -1,6 +1,7 @@
 package com.snailwu;
 
 import com.snailwu.rabbitmq.config.RootConfig;
+import com.snailwu.rabbitmq.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.*;
@@ -28,8 +29,6 @@ public class SpringTestTemplate {
     private RabbitAdmin rabbitAdmin;
     @Resource
     private RabbitTemplate rabbitTemplate;
-    @Resource
-    private DirectExchange directExchange;
 
     @Test
     public void testRabbitAdmin() {
@@ -49,12 +48,12 @@ public class SpringTestTemplate {
         messageProperties.setHeader("type", "自定义消息类型");
         Message message = new Message("Spring RabbitMQ!".getBytes(StandardCharsets.UTF_8), messageProperties);
 
-        rabbitTemplate.send(directExchange.getName(), "bean.abc", message);
+        rabbitTemplate.send("bean.exchange", "bean.abc", message);
     }
 
     @Test
     public void testSendTextMessage() {
-        rabbitTemplate.convertAndSend(directExchange.getName(), "bean.abc", "Hello Text RabbitMQ.");
+        rabbitTemplate.convertAndSend("bean.exchange", "bean.abc", "Hello Text RabbitMQ.");
     }
 
     @Test
@@ -64,7 +63,15 @@ public class SpringTestTemplate {
         messageProperties.setContentType("application/json");
         Message message = new Message("{\"name\":\"Wu\",\"age\":18}".getBytes(StandardCharsets.UTF_8), messageProperties);
 
-        rabbitTemplate.send(directExchange.getName(), "bean.abc", message);
+        rabbitTemplate.send("bean.exchange", "bean.abc", message);
+    }
+
+    @Test
+    public void testSendUser() {
+        User user = new User();
+        user.setName("WuDada");
+        user.setAge(20);
+        rabbitTemplate.convertAndSend("entity.exchange", "entity.direct", user);
     }
 
 }

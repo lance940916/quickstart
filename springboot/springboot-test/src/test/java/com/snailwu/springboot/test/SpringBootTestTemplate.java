@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 /**
  * SpringBoot 不同于 Spring，它会帮你自动的构建环境，所以可以直接运行测试方法
- *
+ * <p>
  * 也可以使用 maven test 进行测试，运行方式同 Spring 一样
  *
  * @author: 吴庆龙
