@@ -4,6 +4,7 @@ import com.snailwu.rabbitmq.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 
@@ -15,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  * @date 2020/12/12 上午10:06
  */
 @RabbitListener(queues = {"wu.mike"})
-//@Component
+@Component
 public class AnnotationMessageListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -23,7 +23,7 @@ import java.util.Map;
  * @author 吴庆龙
  * @date 2020/12/12 上午10:06
  */
-@Component
+//@Component
 public class AnnotationMethodMessageListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

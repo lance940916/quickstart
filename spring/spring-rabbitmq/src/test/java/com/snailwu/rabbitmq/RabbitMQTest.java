@@ -1,6 +1,7 @@
 package com.snailwu.rabbitmq;
 
 import com.snailwu.rabbitmq.config.AnnotationRabbitMQConfig;
+import com.snailwu.rabbitmq.config.RabbitMQConfig;
 import com.snailwu.rabbitmq.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +21,8 @@ import java.nio.charset.StandardCharsets;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
         classes = {
-//                RabbitMQConfig.class,
-                AnnotationRabbitMQConfig.class,
+                RabbitMQConfig.class,
+//                AnnotationRabbitMQConfig.class,
         }
 )
 public class RabbitMQTest {
@@ -47,9 +48,9 @@ public class RabbitMQTest {
         // 声明交换机、队列和路由键
         Exchange exchange = ExchangeBuilder.directExchange("wu.users").durable(true).build();
         admin.declareExchange(exchange);
-        Queue queue = QueueBuilder.durable("wu.jerry").build();
+        Queue queue = QueueBuilder.durable("wu.tom").build();
         admin.declareQueue(queue);
-        admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("wu.jerry").noargs());
+        admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("wu.tom").noargs());
     }
 
     @Test

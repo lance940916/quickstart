@@ -141,7 +141,7 @@ public class RabbitMQConfig implements ApplicationContextAware {
     public SimpleMessageListenerContainer simpleMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
         // 添加消费队列
-        container.addQueueNames("wu.queue", "wu.mike", "wu.tom", "wu.jerry");
+        container.addQueueNames("wu.mike", "wu.tom", "wu.jerry");
         // 当前消费者的数量
         container.setConcurrentConsumers(1);
         // 最大消费者的数量
@@ -161,9 +161,9 @@ public class RabbitMQConfig implements ApplicationContextAware {
                 2. 如果 content_type 是以 text 开头的话，使用 String 参数的方法来接收消息
                 3. 如果 content_type 是 application/x-java-serialized-object 的话，使用反序列化得到的对象进行接收
          */
-//        MessageListenerAdapter adapter = new MessageListenerAdapter();
-//        adapter.setDelegate(new SpringMessageListener());
-//        container.setMessageListener(adapter);
+        MessageListenerAdapter adapter = new MessageListenerAdapter();
+        adapter.setDelegate(new SpringMessageListener());
+        container.setMessageListener(adapter);
 
         /*
             配置不同的队列对应不同的处理方法
@@ -202,16 +202,16 @@ public class RabbitMQConfig implements ApplicationContextAware {
         /*
             配置以实现在 __TypeId__ 中不需要输入类全名，直接使用别名即可
          */
-        MessageListenerAdapter adapter = new MessageListenerAdapter(new SpringMessageListener());
-        Jackson2JsonMessageConverter jsonMessageConverter = new Jackson2JsonMessageConverter();
-        DefaultJackson2JavaTypeMapper javaTypeMapper = (DefaultJackson2JavaTypeMapper)
-                jsonMessageConverter.getJavaTypeMapper();
-        // 使用 user 代替 com.snailwu.rabbitmq.entity.User
-        Map<String, Class<?>> idClassMap = new HashMap<>();
-        idClassMap.put("user", User.class);
-        javaTypeMapper.setIdClassMapping(idClassMap);
-        adapter.setMessageConverter(jsonMessageConverter);
-        container.setMessageListener(adapter);
+//        MessageListenerAdapter adapter = new MessageListenerAdapter(new SpringMessageListener());
+//        Jackson2JsonMessageConverter jsonMessageConverter = new Jackson2JsonMessageConverter();
+//        DefaultJackson2JavaTypeMapper javaTypeMapper = (DefaultJackson2JavaTypeMapper)
+//                jsonMessageConverter.getJavaTypeMapper();
+//        // 使用 user 代替 com.snailwu.rabbitmq.entity.User
+//        Map<String, Class<?>> idClassMap = new HashMap<>();
+//        idClassMap.put("user", User.class);
+//        javaTypeMapper.setIdClassMapping(idClassMap);
+//        adapter.setMessageConverter(jsonMessageConverter);
+//        container.setMessageListener(adapter);
 
         return container;
     }
