@@ -1,5 +1,6 @@
 package com.snailwu.rabbitmq;
 
+import com.snailwu.rabbitmq.config.AnnotationRabbitMQConfig;
 import com.snailwu.rabbitmq.config.RabbitMQConfig;
 import com.snailwu.rabbitmq.entity.User;
 import org.junit.Test;
@@ -20,7 +21,8 @@ import java.nio.charset.StandardCharsets;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
         classes = {
-                RabbitMQConfig.class
+//                RabbitMQConfig.class,
+                AnnotationRabbitMQConfig.class,
         }
 )
 public class RabbitMQTest {
@@ -91,9 +93,9 @@ public class RabbitMQTest {
     @Test
     public void testSendUser() {
         User user = new User();
-        user.setName("WuDada");
+        user.setName("Jerry");
         user.setAge(20);
-        template.convertAndSend("wu.exchange", "wu.key", user);
+        template.convertAndSend("wu.users", "wu.jerry", user);
     }
 
 }

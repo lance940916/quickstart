@@ -1,45 +1,37 @@
 package com.snailwu.rabbitmq.listener;
 
 import com.snailwu.rabbitmq.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 
 /**
  * 声明在类上
+ * 根据配置的消息转换器进行方法的调用
  *
  * @author 吴庆龙
  * @date 2020/12/12 上午10:06
  */
-@RabbitListener(
-        bindings = @QueueBinding(
-                value = @Queue(
-                        value = "annotation.queue",
-                        durable = "true"
-                ),
-                exchange = @Exchange(
-                        value = "annotation.exchange",
-                        durable = "true"
-                ),
-                key = "annotation.direct"
-        )
-)
+@RabbitListener(queues = {"wu.mike"})
 //@Component
 public class AnnotationMessageListener {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RabbitHandler
     public void handleMessage(byte[] body) {
-        System.out.println("byte[] " + new String(body, StandardCharsets.UTF_8));
+        logger.warn("收到消息byte[]：{}", new String(body, StandardCharsets.UTF_8));
     }
 
     @RabbitHandler
     public void handleMessage(String message) {
-        System.out.println("String " + message);
+        logger.warn("收到消息String：{}",message);
     }
 
     @RabbitHandler
     public void handleMessage(User user) {
-        System.out.println("User " + user);
+        logger.warn("收到消息User：{}", user);
     }
 
 }
