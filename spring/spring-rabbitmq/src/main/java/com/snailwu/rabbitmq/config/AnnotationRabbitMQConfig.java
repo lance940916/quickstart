@@ -33,6 +33,10 @@ public class AnnotationRabbitMQConfig implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
+    /**
+     *
+     * 注解 @NonNull/@Nullable 在程序运行的过程中不会起任何作用，只会在IDE、编译器、FindBugs检查、生成文档的时候有做提示
+     */
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;

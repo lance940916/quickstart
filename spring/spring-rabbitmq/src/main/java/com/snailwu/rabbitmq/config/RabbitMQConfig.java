@@ -90,7 +90,8 @@ public class RabbitMQConfig implements ApplicationContextAware {
         template.setMandatory(true);
         template.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             @Override
-            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+            public void returnedMessage(@NonNull Message message, int replyCode, @NonNull String replyText,
+                                        @NonNull String exchange, @NonNull String routingKey) {
                 // 消息不可达时，在此监听
                 byte[] body = message.getBody();
                 String msg = new String(body, StandardCharsets.UTF_8);
