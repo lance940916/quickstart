@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
-        RabbitMQConfig.class,
-//        AnnotationRabbitMQConfig.class,
+//        RabbitMQConfig.class,
+        AnnotationRabbitMQConfig.class,
 })
 public class RootConfig {
 

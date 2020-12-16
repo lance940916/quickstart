@@ -37,14 +37,12 @@ public class WuConsumer extends DefaultConsumer {
                 + ", routingKey:" + routingKey + ", message:" + message);
 
         try {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        channel.basicNack(deliveryTag, false, true);
-
-//        channel.basicAck(deliveryTag, false);
-//        System.out.println("WuConsumer ack完毕 deliveryTag:" + deliveryTag);
+        channel.basicAck(deliveryTag, false);
+        System.out.println("WuConsumer ack完毕 deliveryTag:" + deliveryTag);
     }
 }

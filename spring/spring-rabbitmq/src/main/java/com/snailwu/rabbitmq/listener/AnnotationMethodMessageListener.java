@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 声明在方法上可以注入 @RabbitListener 允许的参数，不需要 @RabbitHandler 注解
@@ -23,14 +24,20 @@ import java.util.Map;
  * @author 吴庆龙
  * @date 2020/12/12 上午10:06
  */
-//@Component
+@Component
 public class AnnotationMethodMessageListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RabbitListener(queues = {"wu.mike"})
     public void onMikeMessage(Channel channel, Message message) throws IOException {
         byte[] body = message.getBody();
-        logger.warn("收到消息：{}", new String(body, StandardCharsets.UTF_8));
+        logger.warn("Mike收到消息：{}", new String(body, StandardCharsets.UTF_8));
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // 手工签收
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
@@ -43,7 +50,13 @@ public class AnnotationMethodMessageListener {
         for (Map.Entry<String, Object> entry : headers.entrySet()) {
             logger.warn("消息头：{} = {}", entry.getKey(), entry.getValue());
         }
-        logger.warn("收到消息：{}", new String(body, StandardCharsets.UTF_8));
+        logger.warn("Tom收到消息：{}", new String(body, StandardCharsets.UTF_8));
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // 手工签收
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
@@ -53,7 +66,7 @@ public class AnnotationMethodMessageListener {
     @RabbitListener(queues = {"wu.jerry"})
     public void onJerryMessage(Channel channel, @Payload User user, @Header(AmqpHeaders.DELIVERY_TAG) Long deliveryTag)
             throws IOException {
-        logger.warn("收到消息：{}", user);
+        logger.warn("Jerry收到消息：{}", user);
 
         // 手工签收
         channel.basicAck(deliveryTag, false);

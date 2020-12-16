@@ -6,6 +6,7 @@ import com.snailwu.rabbitmq.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,9 +49,48 @@ public class RabbitMQTest {
         // 声明交换机、队列和路由键
         Exchange exchange = ExchangeBuilder.directExchange("wu.users").durable(true).build();
         admin.declareExchange(exchange);
-        Queue queue = QueueBuilder.durable("wu.tom").build();
+        Queue queue = QueueBuilder.durable("wu.tom").withArgument("x-queue-type", "classic").build();
         admin.declareQueue(queue);
         admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("wu.tom").noargs());
+    }
+
+    /**
+     * 定义死信队列
+     * 使用 fanout 模式，其中只有一个队列
+     */
+    @Test
+    public void declareDeadExchange() {
+        Exchange exchange = ExchangeBuilder.fanoutExchange("wu.dead-letter-exchange").durable(true).build();
+        admin.declareExchange(exchange);
+        Queue queue = QueueBuilder.durable("wu.dead-letter-queue").withArgument("x-queue-type", "classic").build();
+        admin.declareQueue(queue);
+        admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("").noargs());
+    }
+
+    /**
+     * 定义转发到死信队列的队列
+     */
+    @Test
+    public void declareQueueToDeadExchange() {
+        admin.deleteExchange("wu.exchange");
+        Exchange exchange = ExchangeBuilder.fanoutExchange("wu.exchange").durable(true).build();
+        admin.declareExchange(exchange);
+        admin.deleteQueue("wu.queue");
+        Queue queue = QueueBuilder.durable("wu.queue")
+                .withArgument("x-queue-type", "classic")
+                .build();
+        admin.declareQueue(queue);
+        admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("").noargs());
+    }
+
+    @Test
+    public void sendToDeadQueue() {
+        MessageProperties messageProperties = new MessageProperties();
+        // 10秒过期
+        messageProperties.setExpiration("10000");
+        String msg = "Hello Dead Queue.";
+        Message message = new Message(msg.getBytes(StandardCharsets.UTF_8), messageProperties);
+        template.send("wu.exchange", "", message);
     }
 
     @Test
@@ -58,7 +98,7 @@ public class RabbitMQTest {
         // 声明交换机、队列和路由键
         Exchange exchange = ExchangeBuilder.directExchange("wu.exchange").durable(true).build();
         admin.declareExchange(exchange);
-        Queue queue = QueueBuilder.durable("wu.queue").build();
+        Queue queue = QueueBuilder.durable("wu.queue").withArgument("x-queue-type", "classic").build();
         admin.declareQueue(queue);
         admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("wu.key").noargs());
 
@@ -89,6 +129,17 @@ public class RabbitMQTest {
         user.setName("Jerry");
         user.setAge(20);
         template.convertAndSend("wu.users", "wu.jerry", user);
+    }
+
+    @Test
+    public void sendCorrelationDataMessage() {
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setExpiration("10000");
+        messageProperties.setCorrelationId("CorrelationId-ABC");
+        String msg = "Hello Dead Queue.";
+        Message message = new Message(msg.getBytes(StandardCharsets.UTF_8), messageProperties);
+        CorrelationData correlationData = new CorrelationData("CorrelationId-22222");
+        template.send("wu.users", "wu.jerry11", message, correlationData);
     }
 
 }

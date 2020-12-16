@@ -8,6 +8,7 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -60,7 +61,7 @@ public class RabbitMQConfig implements ApplicationContextAware {
         // 设置链接的最大限制
         factory.setConnectionLimit(5);
         // 消息确认
-        factory.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.NONE);
+        factory.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.CORRELATED);
         // 消息返回
         factory.setPublisherReturns(true);
         return factory;
@@ -99,15 +100,15 @@ public class RabbitMQConfig implements ApplicationContextAware {
                         exchange, routingKey, msg, replyCode, replyText);
             }
         });
-//        // 消费端 消息接收确认监听
-//        template.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
-//            @Override
-//            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-//                // 消息确认结果
-//                String correlationDataId = correlationData.getId();
-//                logger.warn("消息确认监听: correlationDataId:[{}] ack:[{}], cause:[{}]", correlationDataId, ack, cause);
-//            }
-//        });
+        // 消费端 消息接收确认监听
+        template.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
+            @Override
+            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+                // 消息确认结果
+                String correlationDataId = correlationData.getId();
+                logger.warn("消息确认监听: correlationDataId:[{}] ack:[{}], cause:[{}]", correlationDataId, ack, cause);
+            }
+        });
         return template;
     }
 
@@ -150,7 +151,7 @@ public class RabbitMQConfig implements ApplicationContextAware {
         // 是否重回队列
         container.setDefaultRequeueRejected(false);
         // 设置自动签收
-        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         // 设置 ConsumerTag 策略
         container.setConsumerTagStrategy(queue -> queue + "_" + UUID.randomUUID().toString());
 
@@ -162,9 +163,9 @@ public class RabbitMQConfig implements ApplicationContextAware {
                 2. 如果 content_type 是以 text 开头的话，使用 String 参数的方法来接收消息
                 3. 如果 content_type 是 application/x-java-serialized-object 的话，使用反序列化得到的对象进行接收
          */
-        MessageListenerAdapter adapter = new MessageListenerAdapter();
-        adapter.setDelegate(new SpringMessageListener());
-        container.setMessageListener(adapter);
+//        MessageListenerAdapter adapter = new MessageListenerAdapter();
+//        adapter.setDelegate(new SpringMessageListener());
+//        container.setMessageListener(adapter);
 
         /*
             配置不同的队列对应不同的处理方法

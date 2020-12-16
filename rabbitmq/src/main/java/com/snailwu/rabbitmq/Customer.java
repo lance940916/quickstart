@@ -1,11 +1,11 @@
 package com.snailwu.rabbitmq;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -14,6 +14,7 @@ import java.util.concurrent.TimeoutException;
  * @author wu
  */
 public class Customer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Customer.class);
 
     public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -26,30 +27,28 @@ public class Customer {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        // 声明一个Exchange
-        channel.exchangeDeclare("bus", "direct", true, false, false, null);
-
-        // 声明一个Queue
-        channel.queueDeclare("cpu", true, false, false, null);
-
-        // 建立Exchange和Queue的绑定关系
-        channel.queueBind("cpu", "bus", "bus.cpu");
-
-        // Channel级别的消费限流
-//        channel.basicQos(2);
-
         System.out.println("Waiting for messages. To exit press CTRL+C");
 
-        // =========== 使用RabbitMQ自己的Consumer BEGIN
-
-
         // =========== 使用自定义的Consumer BEGIN
+        channel.basicQos(2);
         Consumer consumer = new WuConsumer(channel);
-        channel.basicConsume("cpu", true, consumer);
+        channel.basicConsume("wu.mike", false, "java-client", consumer);
         // =========== 使用自定义的Consumer END
 
-
-
+//        channel.basicQos(5);
+//        channel.basicConsume("wu.mike", true, "wu-client", new DeliverCallback() {
+//            @Override
+//            public void handle(String consumerTag, Delivery message) throws IOException {
+//                Envelope envelope = message.getEnvelope();
+//                LOGGER.warn("consumerTag:[{}] Envelope:[{}] Message:[{}]", consumerTag, envelope,
+//                        new String(message.getBody(), StandardCharsets.UTF_8));
+//            }
+//        }, new CancelCallback() {
+//            @Override
+//            public void handle(String consumerTag) throws IOException {
+//                LOGGER.warn("consumerTag: [{}]", consumerTag);
+//            }
+//        });
 
     }
 

@@ -27,27 +27,27 @@ public class Producer {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        // 启用消息确认模式
-        channel.confirmSelect();
-
-        // 添加一个确认监听（先监听，后发送消息）
-        channel.addConfirmListener(new ConfirmListener() {
-            /**
-             * ACK 确认
-             * @param deliveryTag 消息的唯一标签
-             * @param multiple 是否批量
-             * @throws IOException ERROR
-             */
-            @Override
-            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-                System.out.println("ConfirmListener ACK! deliveryTag:" + deliveryTag);
-            }
-
-            @Override
-            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-                System.out.println("ConfirmListener NACK! deliveryTag:" + deliveryTag);
-            }
-        });
+//        // 启用消息确认模式
+//        channel.confirmSelect();
+//
+//        // 添加一个确认监听（先监听，后发送消息）
+//        channel.addConfirmListener(new ConfirmListener() {
+//            /**
+//             * ACK 确认
+//             * @param deliveryTag 消息的唯一标签
+//             * @param multiple 是否批量
+//             * @throws IOException ERROR
+//             */
+//            @Override
+//            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+//                System.out.println("ConfirmListener ACK! deliveryTag:" + deliveryTag);
+//            }
+//
+//            @Override
+//            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+//                System.out.println("ConfirmListener NACK! deliveryTag:" + deliveryTag);
+//            }
+//        });
 
         // 添加不可达消息监听
 //        channel.addReturnListener(new ReturnListener() {
@@ -58,11 +58,10 @@ public class Producer {
 //            }
 //        });
 
-
         // 发送消息
-        for (int i = 0; i < 200; i++) {
-            String message = "Hello RabbitMQ!";
-            channel.basicPublish("bus", "bus.cpu", null,
+        for (int i = 0; i < 10; i++) {
+            String message = "Hello RabbitMQ! Index:" + i;
+            channel.basicPublish("wu.users", "wu.tom", null,
                     message.getBytes(StandardCharsets.UTF_8));
             System.out.println("Producer Send '" + message + "'");
         }
@@ -75,6 +74,7 @@ public class Producer {
 
         channel.close();
         connection.close();
+
     }
 
 }

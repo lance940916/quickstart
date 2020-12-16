@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  * @date 2020/12/12 上午10:06
  */
 @RabbitListener(queues = {"wu.mike"})
-@Component
+//@Component
 public class AnnotationMessageListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

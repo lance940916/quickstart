@@ -86,18 +86,18 @@ public class AnnotationRabbitMQConfig implements ApplicationContextAware {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setEncoding(StandardCharsets.UTF_8.name());
         // 发送端 配置消息不可达时（无路由键），ReturnListener 会接收到该消息
-        template.setMandatory(true);
-        template.setReturnCallback(new RabbitTemplate.ReturnCallback() {
-            @Override
-            public void returnedMessage(@NonNull Message message, int replyCode, @NonNull String replyText,
-                                        @NonNull String exchange, @NonNull String routingKey) {
-                // 消息不可达时，在此监听
-                byte[] body = message.getBody();
-                String msg = new String(body, StandardCharsets.UTF_8);
-                logger.warn("消息不可达监听: exchange:[{}] routingKey:[{}] message:[{}] replyCode:[{}] replyText:[{}]",
-                        exchange, routingKey, msg, replyCode, replyText);
-            }
-        });
+//        template.setMandatory(true);
+//        template.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+//            @Override
+//            public void returnedMessage(@NonNull Message message, int replyCode, @NonNull String replyText,
+//                                        @NonNull String exchange, @NonNull String routingKey) {
+//                // 消息不可达时，在此监听
+//                byte[] body = message.getBody();
+//                String msg = new String(body, StandardCharsets.UTF_8);
+//                logger.warn("消息不可达监听: exchange:[{}] routingKey:[{}] message:[{}] replyCode:[{}] replyText:[{}]",
+//                        exchange, routingKey, msg, replyCode, replyText);
+//            }
+//        });
         // 消费端 消息接收确认监听
 //        template.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
 //            @Override
@@ -123,6 +123,9 @@ public class AnnotationRabbitMQConfig implements ApplicationContextAware {
 //        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
         // 手工签收
         factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+
+        // 设置每个队列的限流
+        factory.setPrefetchCount(2);
 
         // 配置消息转换器，默认使用 SimpleMessageConverter
         ContentTypeDelegatingMessageConverter messageConverter = new ContentTypeDelegatingMessageConverter();
