@@ -21,6 +21,7 @@
         <module>zookeeper</module>
         <module>redis</module>
         <module>rabbitmq</module>
+        <module>kafka</module>
     </modules>
 
     <properties>

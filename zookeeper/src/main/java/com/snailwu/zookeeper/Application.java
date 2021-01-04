@@ -11,22 +11,19 @@ import java.util.concurrent.Executors;
 
 /**
  * Hello world!
+ *
  * @author wu
  */
 public class Application {
     public static void main(String[] args) throws IOException, KeeperException, InterruptedException {
-        ZooKeeper zk = new ZooKeeper("127.0.0.1", 5000, new Watcher() {
-            @Override
-            public void process(WatchedEvent event) {
-                System.out.println("Watcher: " + event.getPath());
-            }
-        });
+        ZooKeeper zk = new ZooKeeper("127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183", 5000,
+                event -> System.out.println("Watcher: " + event.getPath()));
 
-//        List<String> children = zk.getChildren("/", false);
-//        System.out.println(children);
+        List<String> children = zk.getChildren("/", false);
+        System.out.println(children);
 //
-//        String result = zk.create("/wu", "hello-world".getBytes(StandardCharsets.UTF_8), ZooDefs.Ids.OPEN_ACL_UNSAFE,
-//                CreateMode.PERSISTENT);
+//        String result = zk.create("/wu", "The Zookeeper Start.".getBytes(StandardCharsets.UTF_8),
+//                ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 //        System.out.println(result);
 //
 //        children = zk.getChildren("/", false);
@@ -34,18 +31,20 @@ public class Application {
 
 //        zkLock(zk);
 
-        cluster(zk);
+//        cluster(zk);
+
+        zk.close();
     }
 
     private static void cluster(ZooKeeper zk) {
         try {
-            zk.create("/cluster", "".getBytes(StandardCharsets.UTF_8),
+            zk.create("/wu", "".getBytes(StandardCharsets.UTF_8),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE,
                     CreateMode.PERSISTENT);
 
             // 父节点必须是永久节点
             for (int i = 0; i < 10; i++) {
-                zk.create("/cluster/zk-node", "".getBytes(StandardCharsets.UTF_8),
+                zk.create("/wu/zk-node", "".getBytes(StandardCharsets.UTF_8),
                         ZooDefs.Ids.OPEN_ACL_UNSAFE,
                         CreateMode.EPHEMERAL_SEQUENTIAL);
             }
@@ -78,7 +77,7 @@ public class Application {
                 } catch (KeeperException | InterruptedException e) {
                     System.out.println("线程:" + threadName + ",创建失败.");
                 }
-            }, "线程-"+i);
+            }, "线程-" + i);
         }
     }
 
