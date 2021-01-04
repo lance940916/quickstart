@@ -3,7 +3,6 @@ package com.snailwu.rabbitmq.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -27,7 +26,7 @@ import java.nio.charset.StandardCharsets;
  */
 @Configuration
 @EnableRabbit
-@ComponentScan("com.snailwu.rabbitmq.listener")
+@ComponentScan("com.snailwu.source.listener")
 public class AnnotationRabbitMQConfig implements ApplicationContextAware {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -12,6 +12,7 @@
         <module>spring-test</module>
         <module>spring-security</module>
         <module>spring-rabbitmq</module>
+        <module>spring-source</module>
     </modules>
 
     <name>${project.artifactId}</name>

@@ -1,6 +1,6 @@
 package com.snailwu.rabbitmq.listener;
 
-import com.snailwu.rabbitmq.entity.User;
+import com.snailwu.source.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

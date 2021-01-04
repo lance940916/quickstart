@@ -1,7 +1,7 @@
 package com.snailwu.rabbitmq.listener;
 
 import com.rabbitmq.client.Channel;
-import com.snailwu.rabbitmq.entity.User;
+import com.snailwu.source.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

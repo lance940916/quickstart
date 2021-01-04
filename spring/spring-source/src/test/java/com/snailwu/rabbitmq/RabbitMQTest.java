@@ -1,8 +1,5 @@
 package com.snailwu.rabbitmq;
 
-import com.snailwu.source.config.AnnotationRabbitMQConfig;
-import com.snailwu.source.config.RabbitMQConfig;
-import com.snailwu.source.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.*;
