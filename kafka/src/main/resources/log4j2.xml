@@ -2,7 +2,7 @@
 <Configuration name="baseConf" status="warn" monitorInterval="30">
 
     <Properties>
-        <Property name="ConsolePattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %l: %msg%n</Property>
+        <Property name="ConsolePattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{1.}(%L): %msg%n</Property>
     </Properties>
 
     <Appenders>

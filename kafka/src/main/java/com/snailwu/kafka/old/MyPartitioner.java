@@ -1,4 +1,4 @@
-package com.snailwu.kafka;
+package com.snailwu.kafka.old;
 
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.clients.producer.internals.DefaultPartitioner;

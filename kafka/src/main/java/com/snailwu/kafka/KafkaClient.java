@@ -6,6 +6,7 @@ import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.Node;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.TopicPartitionInfo;
+import org.apache.kafka.common.config.ConfigResource;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -21,7 +22,8 @@ public class KafkaClient {
     static {
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9091,127.0.0.1:9092,127.0.0.1:9093");
-        props.put(AdminClientConfig.CLIENT_ID_CONFIG, "java-client");
+        props.put(AdminClientConfig.CLIENT_ID_CONFIG, "admin-client");
+        props.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "10000");
         adminClient = KafkaAdminClient.create(props);
     }
 
@@ -32,11 +34,13 @@ public class KafkaClient {
 //        createTopic("sms", 3, 3);
 //        createTopic("user", 1, 3);
 
+//        describeConfig("order");
+
         // 列出 Topic
 //        listTopic();
 
         // Topic 详情
-//        describeTopic("user");
+//        describeTopic("sms");
 
 //        deleteTopic("user");
 
@@ -49,9 +53,19 @@ public class KafkaClient {
 
 //        describeCluster();
 
-        listConsumerGroups();
+//        listConsumerGroups();
 
         adminClient.close();
+    }
+
+    /**
+     * 列出被修改的配置
+     */
+    private static void describeConfig(String topic) throws ExecutionException, InterruptedException {
+        ConfigResource configResource = new ConfigResource(ConfigResource.Type.TOPIC, topic);
+        Map<ConfigResource, Config> configMap = adminClient.describeConfigs(Collections.singleton(configResource))
+                .all().get();
+        configMap.forEach((k, v) -> System.out.println(k + "=" + v));
     }
 
     /**
@@ -68,9 +82,12 @@ public class KafkaClient {
      * 创建 Topic
      */
     private static void createTopic(String name, int numPartitions, int replicationFactor) throws Exception {
-        Collection<NewTopic> topics = new ArrayList<>();
-        topics.add(new NewTopic(name, numPartitions, (short) replicationFactor));
-        CreateTopicsResult createTopicsResult = adminClient.createTopics(topics);
+        NewTopic newTopic = new NewTopic(name, numPartitions, (short) replicationFactor);
+        Map<String, String> configs = new HashMap<>();
+        configs.put("cleanup.policy", "delete");
+        newTopic.configs(configs);
+
+        CreateTopicsResult createTopicsResult = adminClient.createTopics(Arrays.asList(newTopic));
         createTopicsResult.all().get();
     }
 
@@ -128,10 +145,10 @@ public class KafkaClient {
      * topic: 分区名
      * totalCount: 要调整为几个分区
      * 例1、目前有2个分区，每个分区有1个副本。执行：createPartitions("user", 3, Arrays.asList(Arrays.asList(3)));
-     *      意思将分区增加到 3 个，指定新增的这个分区的副本在 broker id 是 3 的节点上
+     * 意思将分区增加到 3 个，指定新增的这个分区的副本在 broker id 是 3 的节点上
      * 例1、目前有1个分区，每个分区有3个副本。执行：createPartitions("user", 3, Arrays.asList(Arrays.asList(1, 2, 3), Arrays.asList(2, 3, 1)));
-     *      意思将分区增加到 3 个，指定新增的第一个分区的副本在 broker id 是 1, 2, 3 的节点上，第二个分区的副本在 broker id 是 2, 3, 1 的节点上
-     *      这里指定了顺序，也可以顺序是一样的
+     * 意思将分区增加到 3 个，指定新增的第一个分区的副本在 broker id 是 1, 2, 3 的节点上，第二个分区的副本在 broker id 是 2, 3, 1 的节点上
+     * 这里指定了顺序，也可以顺序是一样的
      */
     private static void createPartitions(String topic, int totalCount, List<List<Integer>> newAssignments) {
         Map<String, NewPartitions> partitionsMap = new HashMap<>();
