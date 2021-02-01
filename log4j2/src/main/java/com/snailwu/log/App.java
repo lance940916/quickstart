@@ -18,10 +18,15 @@ public class App {
 //            TimeUnit.SECONDS.sleep(1);
 //        }
 
-        log.debug("Hello Debug");
-        log.info("Hello Info");
-        log.warn("Hello Warn");
-        log.error("Hello Error");
+//        log.debug("Hello Debug");
+//        log.info("Hello Info");
+//        log.warn("Hello Warn");
+//        log.error("Hello Error");
+
+
+
+        
 
     }
+
 }

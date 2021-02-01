@@ -22,7 +22,7 @@ public class MainProducer {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // 配置生产者参数
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9091,127.0.0.1:9092,127.0.0.1:9093");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9090,localhost:9091,localhost:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.CLIENT_ID_CONFIG, "main-producer");
@@ -70,20 +70,20 @@ public class MainProducer {
 //        producer.send(record2).get();
 //        producer.send(record00).get();
 
-//        producer.send(new ProducerRecord<>("sms", "001", "收款100万元")).get();
-//        producer.send(new ProducerRecord<>("sms", "007", "收款700万元")).get();
-//        producer.send(new ProducerRecord<>("log", "003", "收款300万元")).get();
-//        producer.send(new ProducerRecord<>("log", "004", "收款400万元")).get();
-//        producer.send(new ProducerRecord<>("log", "002", "收款200万元")).get();
+        producer.send(new ProducerRecord<>("tom", "001", "收款100万元")).get();
+        producer.send(new ProducerRecord<>("tom", "007", "收款700万元")).get();
+        producer.send(new ProducerRecord<>("mike", "003", "收款300万元")).get();
+        producer.send(new ProducerRecord<>("mike", "004", "收款400万元")).get();
+        producer.send(new ProducerRecord<>("mike", "002", "收款200万元")).get();
 
-        while (true) {
-            producer.send(new ProducerRecord<>("user", 0, System.currentTimeMillis(),
-                    "u-001", "Mike-001")).get();
+//        while (true) {
+//            producer.send(new ProducerRecord<>("user", 0, System.currentTimeMillis(),
+//                    "u-001", "Mike-001")).get();
+//
+//            TimeUnit.SECONDS.sleep(1);
+//        }
 
-            TimeUnit.SECONDS.sleep(1);
-        }
-
-//        producer.close();
+        producer.close();
     }
 
 }

@@ -27,7 +27,6 @@ public class App {
         scheduler.scheduleJob(job, trigger);
 
 
-
 //        scheduler.shutdown();
     }
 

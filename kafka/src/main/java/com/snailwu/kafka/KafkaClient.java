@@ -16,12 +16,11 @@ import java.util.concurrent.ExecutionException;
  * @date 2020/12/17 下午4:43
  */
 public class KafkaClient {
-
     private static final AdminClient adminClient;
 
     static {
         Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9091,127.0.0.1:9092,127.0.0.1:9093");
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9090,localhost:9091,localhost:9092");
         props.put(AdminClientConfig.CLIENT_ID_CONFIG, "admin-client");
         props.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "10000");
         adminClient = KafkaAdminClient.create(props);
@@ -29,15 +28,15 @@ public class KafkaClient {
 
     public static void main(String[] args) throws Exception {
         // 创建 Topic
-//        createTopic("order", 3, 1);
-//        createTopic("log", 3, 2);
-//        createTopic("sms", 3, 3);
+        createTopic("tom", 3, 1);
+        createTopic("mike", 3, 2);
+        createTopic("jerry", 3, 3);
 //        createTopic("user", 1, 3);
 
 //        describeConfig("order");
 
         // 列出 Topic
-//        listTopic();
+        listTopic();
 
         // Topic 详情
 //        describeTopic("sms");
@@ -55,6 +54,13 @@ public class KafkaClient {
 
 //        listConsumerGroups();
 
+//        Map<ConfigResource, Collection<AlterConfigOp>> configResourceCollectionMap = new HashMap<>();
+//        new ConfigResource(ConfigResource.Type.BROKER, "");
+//        configResourceCollectionMap.put()
+//        adminClient.incrementalAlterConfigs(configResourceCollectionMap);
+
+//        describeConfig("order");
+
         adminClient.close();
     }
 
@@ -65,7 +71,13 @@ public class KafkaClient {
         ConfigResource configResource = new ConfigResource(ConfigResource.Type.TOPIC, topic);
         Map<ConfigResource, Config> configMap = adminClient.describeConfigs(Collections.singleton(configResource))
                 .all().get();
-        configMap.forEach((k, v) -> System.out.println(k + "=" + v));
+        configMap.forEach((cr, c) -> {
+            System.out.println(cr);
+            for (ConfigEntry entry : c.entries()) {
+                System.out.println(entry);
+            }
+            System.out.println("------------------");
+        });
     }
 
     /**

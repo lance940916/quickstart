@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class Application {
     public static void main(String[] args) throws IOException, KeeperException, InterruptedException {
-        ZooKeeper zk = new ZooKeeper("127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183", 5000,
+        ZooKeeper zk = new ZooKeeper("127.0.0.1:2180,127.0.0.1:2181,127.0.0.1:2182", 5000,
                 event -> System.out.println("Watcher: " + event.getPath()));
 
         List<String> children = zk.getChildren("/", false);
@@ -33,7 +33,7 @@ public class Application {
 
 //        cluster(zk);
 
-        zk.close();
+//        zk.close();
     }
 
     private static void cluster(ZooKeeper zk) {
