@@ -22,6 +22,8 @@
         <module>redis</module>
         <module>rabbitmq</module>
         <module>kafka</module>
+        <module>graphql</module>
+        <module>start</module>
     </modules>
 
     <properties>
