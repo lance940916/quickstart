@@ -6,6 +6,7 @@
     <modules>
         <module>springboot-test</module>
         <module>springboot-request</module>
+        <module>springboot-graphql</module>
         <module>apollo</module>
     </modules>
 
