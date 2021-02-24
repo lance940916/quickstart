@@ -1,7 +1,7 @@
 package com.snailwu.rabbitmq.listener;
 
 import com.rabbitmq.client.Channel;
-import com.snailwu.source.entity.User;
+import com.snailwu.rabbitmq.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
