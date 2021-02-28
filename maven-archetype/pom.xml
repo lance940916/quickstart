@@ -23,7 +23,4 @@
         <maven.test.skip>true</maven.test.skip>
     </properties>
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
 </project>

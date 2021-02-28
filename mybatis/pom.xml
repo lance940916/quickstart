@@ -3,87 +3,48 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.snailwu</groupId>
-    <artifactId>quickstart-mybatis</artifactId>
+    <parent>
+        <groupId>com.snailwu</groupId>
+        <artifactId>quickstart</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mybatis-quickstart</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>${project.artifactId}</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.test.skip>true</maven.test.skip>
-
-        <mysql-connector-java.verSion>8.0.20</mysql-connector-java.verSion>
-        <mybatis-generator-core.version>1.4.0</mybatis-generator-core.version>
-        <mybatis.version>3.5.4</mybatis.version>
-    </properties>
+    <name>mybatis</name>
 
     <dependencies>
-
-        <!-- Mysql Connection Driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.verSion}</version>
-        </dependency>
-
-        <!-- MyBatis Generator -->
-        <dependency>
-            <groupId>org.mybatis.generator</groupId>
-            <artifactId>mybatis-generator-core</artifactId>
-            <version>${mybatis-generator-core.version}</version>
-        </dependency>
-
-        <!-- MyBatis Dynamic SQL -->
-        <dependency>
-            <groupId>org.mybatis.dynamic-sql</groupId>
-            <artifactId>mybatis-dynamic-sql</artifactId>
-            <version>1.1.4</version>
-        </dependency>
-
         <!-- MyBatis -->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
         </dependency>
 
         <!-- HikariCP -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>3.4.5</version>
         </dependency>
 
-        <!-- Log4j2 -->
+        <!-- Mysql Connection Driver -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
+        <!-- MyBatis Generator -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.12.1</version>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
         </dependency>
+
+        <!-- MyBatis Dynamic SQL -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.12.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.12.1</version>
+            <groupId>org.mybatis.dynamic-sql</groupId>
+            <artifactId>mybatis-dynamic-sql</artifactId>
         </dependency>
 
     </dependencies>
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-    </build>
 </project>

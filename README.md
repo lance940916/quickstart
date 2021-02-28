@@ -1,4 +1,1 @@
-# 项目内容
-
-1. 平时整理的代码模板
-2. 学习技术时整理的代码
+# All Kinds Of Technology Quickstart

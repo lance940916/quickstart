@@ -50,7 +50,7 @@
         </javaTypeResolver>
 
         <!-- Model -->
-        <javaModelGenerator targetPackage="com.snailwu.mybatis.model"
+        <javaModelGenerator targetPackage="com.snailwu.quickstart.mybatis.model"
                             targetProject="mybatis-generator/src/main/java">
 <!--            <property name="trimStrings" value="true"/>-->
         </javaModelGenerator>
@@ -60,7 +60,7 @@
         </sqlMapGenerator>
 
         <!-- Mapper -->
-        <javaClientGenerator targetPackage="com.snailwu.mybatis.dao"
+        <javaClientGenerator targetPackage="com.snailwu.quickstart.mybatis.dao"
                              targetProject="mybatis-generator/src/main/java" type="XMLMAPPER">
         </javaClientGenerator>
 
