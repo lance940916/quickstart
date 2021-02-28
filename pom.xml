@@ -14,7 +14,7 @@
     <modules>
         <module>algorithm</module>
         <module>ehcache</module>
-        <module>kafka</module>
+<!--        <module>kafka</module>-->
         <module>log4j2</module>
         <module>maven-archetype</module>
         <module>mybatis</module>

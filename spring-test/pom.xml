@@ -41,6 +41,9 @@
             <properties>
                 <env.name>dev</env.name>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>test</id>
