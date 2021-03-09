@@ -1,6 +1,7 @@
 package com.snailwu.start;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author WuQinglong
@@ -35,7 +36,7 @@ public class ArrayDemo {
 
     public static void main(String[] args) {
         int[] a = {1, 5, 7, 8, 9};
-        int[] b = {5, 8, 9};
+        int[] b = {5, 8, 9, 6};
         int[] c = retainAll(a, b);
         for (int i = 0; i < c.length; i++) {
             System.out.println(c[i]);

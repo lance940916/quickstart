@@ -2,7 +2,6 @@ package com.snailwu.start;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author WuQinglong
@@ -83,22 +82,21 @@ public class Main {
     }
 
     public static int removeDuplicates(int[] nums) {
-        int left = 0;
-        int right = left + 1;
-        while (right < nums.length) {
-            if (nums[left] != nums[right]) {
-                // right 和下一个元素交换 并 right++
-                left++;
-                nums[left] = nums[right];
+        int slow = 0;
+        int fast = slow + 1;
+        while (fast < nums.length) {
+            if (nums[slow] != nums[fast]) {
+                // fast 和下一个元素交换 并 fast++
+                slow++;
+                nums[slow] = nums[fast];
             }
-            right++;
+            fast++;
         }
-        int maxIndex = left;
+        int maxIndex = slow;
         for (int i = 0; i < maxIndex; i++) {
             System.out.print(nums[i] + ",");
         }
-
-        return left + 1;
+        return slow + 1;
     }
 
 }
