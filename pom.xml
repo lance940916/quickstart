@@ -28,6 +28,7 @@
         <module>springboot-test</module>
         <module>zookeeper</module>
         <module>reactor</module>
+        <module>network</module>
     </modules>
 
     <properties>
