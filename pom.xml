@@ -29,6 +29,7 @@
         <module>zookeeper</module>
         <module>springboot-swagger</module>
         <module>reactor</module>
+        <module>network</module>
     </modules>
 
     <properties>

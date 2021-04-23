@@ -1,6 +1,9 @@
 package com.snailwu.zookeeper;
 
-import org.apache.zookeeper.*;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +18,11 @@ import java.util.concurrent.Executors;
  * @author wu
  */
 public class Application {
+
+
     public static void main(String[] args) throws IOException, KeeperException, InterruptedException {
+        ThreadLocal<String> threadLocal = new ThreadLocal<>();
+        threadLocal.set("AAA");
         ZooKeeper zk = new ZooKeeper("127.0.0.1:2180,127.0.0.1:2181,127.0.0.1:2182", 5000,
                 event -> System.out.println("Watcher: " + event.getPath()));
 
