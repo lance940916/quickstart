@@ -4,32 +4,33 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.snailwu</groupId>
-    <artifactId>quickstart</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>quick-start</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <name>${project.artifactId}</name>
+    <name>quick-start</name>
     <description>all kinds of technology quickstart.</description>
 
     <modules>
-        <module>algorithm</module>
-        <module>ehcache</module>
-<!--        <module>kafka</module>-->
         <module>log4j2</module>
+        <module>ehcache</module>
         <module>maven-archetype</module>
         <module>mybatis</module>
-        <module>quartz</module>
         <module>rabbitmq</module>
-        <module>rabbitmq-spring</module>
-        <module>redis</module>
-        <module>spring-security</module>
-        <module>spring-test</module>
-        <module>springboot-apollo</module>
-        <module>springboot-test</module>
-        <module>zookeeper</module>
-        <module>springboot-swagger</module>
-        <module>reactor</module>
-        <module>network</module>
+        <module>springboot-rabbitmq</module>
+
+<!--        <module>algorithm</module>-->
+<!--        <module>kafka</module>-->
+<!--        <module>quartz</module>-->
+<!--        <module>redis</module>-->
+<!--        <module>spring-security</module>-->
+<!--        <module>spring-test</module>-->
+<!--        <module>springboot-apollo</module>-->
+<!--        <module>springboot-test</module>-->
+<!--        <module>zookeeper</module>-->
+<!--        <module>springboot-swagger</module>-->
+<!--        <module>reactor</module>-->
+<!--        <module>network</module>-->
     </modules>
 
     <properties>
@@ -40,271 +41,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
 
-        <spring.version>5.2.0.RELEASE</spring.version>
-
         <log4j.version>2.14.0</log4j.version>
     </properties>
 
-
-    <dependencies>
-        <!-- =========================== Unit Test =========================== -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13</version>
-            <scope>test</scope>
-        </dependency>
-
-
-        <!-- ===========================Lombok =========================== -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
-            <scope>provided</scope>
-        </dependency>
-
-
-        <!-- =========================== Apache Commons =========================== -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.10</version>
-        </dependency>
-
-
-        <!-- =========================== Log =========================== -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-    </dependencies>
-
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- =========================== Cache =========================== -->
-            <dependency>
-                <groupId>org.ehcache</groupId>
-                <artifactId>ehcache</artifactId>
-                <version>3.8.1</version>
-            </dependency>
-            <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>3.3.0</version>
-            </dependency>
-
-
-            <!-- =========================== Message Queue =========================== -->
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>2.6.0</version>
-            </dependency>
-            <!-- RabbitMQ -->
-            <dependency>
-                <groupId>com.rabbitmq</groupId>
-                <artifactId>amqp-client</artifactId>
-                <version>5.10.0</version>
-            </dependency>
-
-
-            <!-- =========================== Data Serializable & Deserializable =========================== -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>2.10.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>2.10.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>2.10.0</version>
-            </dependency>
-
-
-            <!-- =========================== Spring Framework =========================== -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-expression</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aspects</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-
-            <!-- =========================== Spring Message Queue =========================== -->
-            <dependency>
-                <groupId>org.springframework.amqp</groupId>
-                <artifactId>spring-rabbit</artifactId>
-                <version>2.2.0.RELEASE</version>
-            </dependency>
-
-
-            <!-- =========================== Spring Security =========================== -->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-test</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-
-            <!-- =========================== ORM =========================== -->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>3.5.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis.dynamic-sql</groupId>
-                <artifactId>mybatis-dynamic-sql</artifactId>
-                <version>1.1.4</version>
-            </dependency>
-
-
-            <!-- =========================== DataSource Pool =========================== -->
-            <dependency>
-                <groupId>com.zaxxer</groupId>
-                <artifactId>HikariCP</artifactId>
-                <version>3.4.5</version>
-            </dependency>
-
-
-            <!-- =========================== Database Driver =========================== -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.20</version>
-            </dependency>
-
-
-            <!-- =========================== Other =========================== -->
-            <dependency>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-core</artifactId>
-                <version>1.4.0</version>
-            </dependency>
-
-
-            <!-- =========================== Schedule Task =========================== -->
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz</artifactId>
-                <version>2.3.2</version>
-            </dependency>
-
-
-            <!-- =========================== Servlet =========================== -->
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
-                <scope>provided</scope>
-            </dependency>
-
-
-            <!-- =========================== Zookeeper =========================== -->
-            <dependency>
-                <groupId>org.apache.zookeeper</groupId>
-                <artifactId>zookeeper</artifactId>
-                <version>3.6.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.curator</groupId>
-                <artifactId>curator-framework</artifactId>
-                <version>5.1.0</version>
-            </dependency>
-
-
-        </dependencies>
-    </dependencyManagement>
-
-
-    <build>
-    </build>
 </project>
