@@ -1,4 +1,4 @@
-package com.snailwu.quickstart.spring.test;
+package com.snailwu.spring.test;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

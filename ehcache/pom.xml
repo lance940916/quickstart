@@ -9,10 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ehcache-quickstart</artifactId>
+    <artifactId>ehcache</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <name>ehcache</name>
 
     <dependencies>
         <dependency>

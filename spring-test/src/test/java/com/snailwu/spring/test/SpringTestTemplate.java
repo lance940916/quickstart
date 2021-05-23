@@ -1,8 +1,5 @@
 package com.snailwu.spring.test;
 
-import com.snailwu.quickstart.spring.test.IndexController;
-import com.snailwu.quickstart.spring.test.RootConfig;
-import com.snailwu.quickstart.spring.test.WebConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

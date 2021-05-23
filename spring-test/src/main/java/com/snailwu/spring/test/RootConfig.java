@@ -1,4 +1,4 @@
-package com.snailwu.quickstart.spring.test;
+package com.snailwu.spring.test;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

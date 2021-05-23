@@ -1,21 +1,18 @@
-package com.snailwu.quickstart.spring.security.config;
+package com.snailwu.spring.test;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 配置 SpringMVC
+ *
  * @author 吴庆龙
- * @date 2020/3/3 4:48 下午
+ * @date 2019/11/25 6:51 下午
  */
-@EnableWebMvc
 @Configuration
-@ComponentScan("com.snailwu.quickstart.spring.security.controller")
-@Import({
-        WebSecurityConfig.class
-})
+@EnableWebMvc
+@ComponentScan("com.snailwu.spring.test")
 public class WebConfig implements WebMvcConfigurer {
-
 }

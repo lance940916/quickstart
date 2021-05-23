@@ -16,21 +16,13 @@
         <module>ehcache</module>
         <module>maven-archetype</module>
         <module>mybatis</module>
+        <module>kafka</module>
         <module>rabbitmq</module>
         <module>springboot-rabbitmq</module>
-
-<!--        <module>algorithm</module>-->
-<!--        <module>kafka</module>-->
-<!--        <module>quartz</module>-->
-<!--        <module>redis</module>-->
-<!--        <module>spring-security</module>-->
-<!--        <module>spring-test</module>-->
-<!--        <module>springboot-apollo</module>-->
-<!--        <module>springboot-test</module>-->
-<!--        <module>zookeeper</module>-->
-<!--        <module>springboot-swagger</module>-->
-<!--        <module>reactor</module>-->
-<!--        <module>network</module>-->
+        <module>zookeeper</module>
+        <module>spring-test</module>
+        <module>springboot-test</module>
+        <module>network</module>
     </modules>
 
     <properties>
