@@ -1,6 +1,5 @@
 package com.snailwu.mybatis;
 
-import com.snailwu.mybatis.dao.MbgTableMapper;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.mapping.Environment;
@@ -34,13 +33,13 @@ public class MyBatisMain {
         Environment environment = new Environment("dev", transactionFactory, dataSource);
 
         // 配置参考 https://mybatis.org/mybatis-3/zh/configuration.html#settings
-        Configuration configuration = new Configuration(environment);
-        configuration.setLogImpl(Slf4jImpl.class);
-        configuration.addMapper(MbgTableMapper.class);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
-
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
-        MbgTableMapper mbgTableMapper = sqlSession.getMapper(MbgTableMapper.class);
+//        Configuration configuration = new Configuration(environment);
+//        configuration.setLogImpl(Slf4jImpl.class);
+//        configuration.addMapper(MbgTableMapper.class);
+//        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+//
+//        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+//        MbgTableMapper mbgTableMapper = sqlSession.getMapper(MbgTableMapper.class);
 
 
 //        SelectStatementProvider statementProvider =
@@ -51,8 +50,7 @@ public class MyBatisMain {
 //                        .build()
 //                        .render(RenderingStrategies.MYBATIS3);
 //        System.out.println(statementProvider.getSelectStatement());
-
-        System.out.println(SelectDSLCompleter.allRows());
+//        System.out.println(SelectDSLCompleter.allRows());
 
 //        long end = System.currentTimeMillis();
 //        mbgTableMapper.selectMany(statementProvider);

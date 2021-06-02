@@ -14,7 +14,7 @@ import java.util.List;
  * @author 吴庆龙
  * @date 2020/6/4 3:31 下午
  */
-public class MBGApplication {
+public class MbgApplication {
 
     public static void main(String[] args) throws Exception {
         // 配置文件路径

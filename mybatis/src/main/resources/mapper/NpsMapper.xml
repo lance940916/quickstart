@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snailwu.mybatis.dao.NpsMapper">
+
+    <select id="npsTable">
+        <choose>
+            <!-- 全国、梯次 -->
+            <when test="city.startsWith(&quot;T&quot;) or city.startsWith(&quot;L&quot;) or city.equals(&quot;特区&quot;)">
+                <!-- 学部视角 -->
+                <if test="showType == &quot;department&quot;">
+                    SELECT
+                    <choose>
+                        <when test="classForm != '0'">
+                            IF(class_type = '0', city_name, CONCAT(city_name, class_type_name)) AS title,
+                        </when>
+                        <otherwise>
+                            city_name AS title,
+                        </otherwise>
+                    </choose>
+                    MAX(IF(sub_gt_id = '50', nps_ratio, 0)) AS all,
+                    <if test="department == &quot;50&quot;">
+                        MAX(IF(sub_gt_id = '100', nps_ratio, 0)) AS nurserySchool,
+                        MAX(IF(sub_gt_id = '200', nps_ratio, 0)) AS primarySchool,
+                        MAX(IF(sub_gt_id = '300', nps_ratio, 0)) AS middleSchool,
+                        MAX(IF(sub_gt_id = '400', nps_ratio, 0)) AS highSchool
+                    </if>
+                    <if test="department == &quot;100&quot;">
+                        MAX(IF(sub_gt_id = '100', nps_ratio, 0)) AS nurserySchool
+                    </if>
+                    <if test="department == &quot;200&quot;">
+                        MAX(IF(sub_gt_id = '200', nps_ratio, 0)) AS primarySchool
+                    </if>
+                    <if test="department == &quot;300&quot;">
+                        MAX(IF(sub_gt_id = '300', nps_ratio, 0)) AS middleSchool
+                    </if>
+                    <if test="department == &quot;400&quot;">
+                        MAX(IF(sub_gt_id = '400', nps_ratio, 0)) AS highSchool
+                    </if>
+                    FROM ads_bi_questionnaire_nps_score_fd
+                    <where>
+                        term_code = #{term}
+                        <choose>
+                            <when test="city == &quot;T0&quot;">
+                                AND city_type=#{city}
+                            </when>
+                            <otherwise>
+                                AND (city_type = #{city} OR city_name = #{city})
+                            </otherwise>
+                        </choose>
+                        AND class_type = #{classForm}
+                        <if test="department != &quot;50&quot;">
+                            AND sub_gt_id IN ('50', #{department})
+                        </if>
+                        AND sample_size <![CDATA[>=]]> 96
+                    </where>
+                    GROUP BY city_code, city_order_t, city_order
+                    ORDER BY CAST(city_order_t AS SIGNED), CAST(city_order AS SIGNED)
+                </if>
+                <!-- 按课态 -->
+                <if test="showType == &quot;classForm&quot;">
+                    SELECT
+                    <choose>
+                        <when test="department != '50'">
+                            IF(sub_gt_id = '50', city_name, CONCAT(city_name, sub_gt_name)) END AS title,
+                        </when>
+                        <otherwise>
+                            city_name AS title,
+                        </otherwise>
+                    </choose>
+                    MAX(IF(class_type = '0', nps_ratio, 0)) AS all,
+                    <if test="classForm == &quot;0&quot;">
+                        MAX(IF(class_type = '2', nps_ratio, 0)) AS doubleTeacher,
+                        MAX(IF(class_type = '4', nps_ratio, 0)) AS faceToFace,
+                        MAX(IF(class_type = '5', nps_ratio, 0)) AS onlineBigClass,
+                        MAX(IF(class_type = '6', nps_ratio, 0)) AS onlineSmallClass
+                    </if>
+                    <if test="classForm == &quot;2&quot;">
+                        MAX(IF(class_type = '2', nps_ratio, 0)) AS doubleTeacher
+                    </if>
+                    <if test="classForm == &quot;4&quot;">
+                        MAX(IF(class_type = '4', nps_ratio, 0)) AS faceToFace
+                    </if>
+                    <if test="classForm == &quot;5&quot;">
+                        MAX(IF(class_type = '5', nps_ratio, 0)) AS onlineBigClass
+                    </if>
+                    <if test="classForm == &quot;6&quot;">
+                        MAX(IF(class_type = '6', nps_ratio, 0)) AS onlineSmallClass
+                    </if>
+                    FROM ads_bi_questionnaire_nps_score_fd
+                    <where>
+                        term_code = #{term}
+                        <choose>
+                            <when test="city == &quot;T0&quot;">
+                                AND city_type=#{city}
+                            </when>
+                            <otherwise>
+                                AND (city_type = #{city} OR city_name = #{city})
+                            </otherwise>
+                        </choose>
+                        AND sub_gt_id = #{department}
+                        <if test="classForm != &quot;0&quot;">
+                            AND class_type IN ('0', #{classForm})
+                        </if>
+                        AND sample_size <![CDATA[>=]]> 96
+                    </where>
+                    GROUP BY city_code, city_order_t, city_order
+                    ORDER BY CAST(t.city_order_t AS SIGNED), CAST(t.city_order AS SIGNED)
+                </if>
+            </when>
+            <!-- 分校 -->
+            <otherwise>
+                SELECT IF(sub_gt_id = '50', city_name, sub_gt_name) AS title,
+                MAX(IF(class_type = '0', nps_ratio, 0)) AS all,
+                <if test="classForm == &quot;0&quot;">
+                    MAX(IF(class_type = '2', nps_ratio, 0)) AS doubleTeacher,
+                    MAX(IF(class_type = '4', nps_ratio, 0)) AS faceToFace,
+                    MAX(IF(class_type = '5', nps_ratio, 0)) AS onlineBigClass,
+                    MAX(IF(class_type = '6', nps_ratio, 0)) AS onlineSmallClass
+                </if>
+                <if test="classForm == &quot;2&quot;">
+                    MAX(IF(class_type = '2', nps_ratio, 0)) AS doubleTeacher
+                </if>
+                <if test="classForm == &quot;4&quot;">
+                    MAX(IF(class_type = '4', nps_ratio, 0)) AS faceToFace
+                </if>
+                <if test="classForm == &quot;5&quot;">
+                    MAX(IF(class_type = '5', nps_ratio, 0)) AS onlineBigClass
+                </if>
+                <if test="classForm == &quot;6&quot;">
+                    MAX(IF(class_type = '6', nps_ratio, 0)) AS onlineSmallClass
+                </if>
+                FROM ads_bi_questionnaire_nps_score_fd
+                <where>
+                    term_code = #{term}
+                    AND city_code = #{city}
+                    <!-- 只能选择一个课态 -->
+                    <if test="classForm != &quot;0&quot;">
+                        AND class_type IN ('0', #{classForm})
+                    </if>
+                    <!-- 只能选择一个学部 -->
+                    <if test="department != &quot;50&quot;">
+                        AND sub_gt_id IN ('50', #{department})
+                    </if>
+                    AND sample_size <![CDATA[>=]]> 96
+                </where>
+                GROUP BY sub_gt_id
+                ORDER BY CAST(sub_gt_id AS SIGNED)
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--  样本环形图  -->
+    <select id="nps_ratio">
+        <choose>
+            <!-- T0、T1、特区、全国 -->
+            <when test="city.startsWith(&quot;T&quot;) or city.startsWith(&quot;L&quot;) or city.equals(&quot;特区&quot;)">
+                SELECT SUM(bs_sample_size) AS detractorCount,
+                SUM(zl_sample_size) AS neutralCount,
+                SUM(tj_sample_size) AS recommenderCount
+                FROM ads_bi_questionnaire_nps_score_fd
+                WHERE term_code=#{term}
+                <choose>
+                    <when test="city == &quot;T0&quot;">
+                        AND city_code='000'
+                    </when>
+                    <otherwise>
+                        AND city_name=#{city}
+                    </otherwise>
+                </choose>
+                AND class_type=#{classForm}
+                AND sub_gt_id=#{department}
+            </when>
+            <!-- 分校 code -->
+            <otherwise>
+                SELECT SUM(bs_sample_size) AS detractorCount,
+                SUM(zl_sample_size) AS neutralCount,
+                SUM(tj_sample_size) AS recommenderCount
+                FROM ads_bi_questionnaire_nps_score_fd
+                WHERE term_code=#{term}
+                AND city_code=#{city}
+                AND class_type=#{classForm}
+                AND sub_gt_id=#{department}
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 归因分析 -->
+    <select id="reason">
+        <choose>
+            <!-- T0、T1、特区、全国 -->
+            <when test="city.startsWith(&quot;T&quot;) or city.startsWith(&quot;L&quot;) or city.equals(&quot;特区&quot;)">
+                SELECT question_order AS question_id, choice_detail, choice_ratio
+                FROM ads_bi_questionnaire_nps_reason_analyze_fd
+                WHERE term_code=#{term}
+                <choose>
+                    <when test="city == &quot;T0&quot;">
+                        AND city_code='000'
+                    </when>
+                    <otherwise>
+                        AND city_name=#{city}
+                    </otherwise>
+                </choose>
+                AND class_type=#{classForm}
+                AND sub_gt_id=#{department}
+                AND type_id=#{typeId}
+                ORDER BY question_order, choice
+            </when>
+            <!-- 分校 code -->
+            <otherwise>
+                SELECT question_order AS question_id, choice_detail, choice_ratio
+                FROM ads_bi_questionnaire_nps_reason_analyze_fd
+                WHERE term_code=#{term}
+                AND city_code=#{city}
+                AND class_type=#{classForm}
+                AND sub_gt_id=#{department}
+                AND type_id=#{typeId}
+                ORDER BY question_order, choice
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 样本数量 -->
+    <select id="sample_size">
+        <choose>
+            <!-- T0、T1、特区、全国 -->
+            <when test="city.startsWith(&quot;T&quot;) or city.startsWith(&quot;L&quot;) or city.equals(&quot;特区&quot;)">
+                SELECT sample_size AS num
+                FROM ads_bi_questionnaire_nps_reason_analyze_fd
+                WHERE term_code=#{term}
+                <choose>
+                    <when test="city == &quot;T0&quot;">
+                        AND city_code='000'
+                    </when>
+                    <otherwise>
+                        AND city_name=#{city}
+                    </otherwise>
+                </choose>
+                AND class_type=#{classForm}
+                AND sub_gt_id=#{department}
+                AND type_id=#{typeId}
+                GROUP BY city_code
+            </when>
+            <!-- 分校 code -->
+            <otherwise>
+                SELECT sample_size AS num
+                FROM ads_bi_questionnaire_nps_reason_analyze_fd
+                WHERE term_code=#{term}
+                AND city_code=#{city}
+                AND class_type=#{classForm}
+                AND sub_gt_id=#{department}
+                AND type_id=#{typeId}
+                GROUP BY city_code
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 分值对比 -->
+    <select id="npsDiff">
+        <choose>
+            <!-- 全国、梯次 -->
+            <when test="city.startsWith(&quot;T&quot;) or city.startsWith(&quot;L&quot;) or city.equals(&quot;特区&quot;)">
+                SELECT ot.title, ot.first_val, ot.second_val, (ot.second_val - ot.first_val) AS diff_val
+                FROM (
+                    SELECT
+                    <choose>
+                        <!-- 未选择 学部和课态，需要区分视角 -->
+                        <when test="classForm == &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                dt.city_name AS title,
+                            </if>
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                IF(dt.sub_gt_name = '全部', dt.city_name, CONCAT(dt.city_name, dt.sub_gt_name)) AS title,
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                IF(dt.class_type_name = '全部', dt.city_name, CONCAT(dt.city_name, dt.class_type_name)) AS title,
+                            </if>
+                        </when>
+                        <!-- 选择了学部 -->
+                        <when test="classForm == &quot;0&quot; and department != &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                CONCAT(dt.city_name, dt.sub_gt_name) AS title,
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                IF(dt.class_type_name = '全部', CONCAT(dt.city_name, dt.sub_gt_name), CONCAT(dt.city_name, dt.sub_gt_name, dt.class_type_name)) AS title,
+                            </if>
+                        </when>
+                        <!-- 选择了课态 -->
+                        <when test="classForm != &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                CONCAT(dt.city_name, dt.class_type_name) AS title,
+                            </if>
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                IF(dt.sub_gt_name = '全部', CONCAT(dt.city_name, dt.class_type_name), CONCAT(dt.city_name, dt.class_type_name, dt.sub_gt_name)) AS title,
+                            </if>
+                        </when>
+                        <!-- 选择了学部和课态 -->
+                        <otherwise>
+                            IF(dt.class_type_name = '全部', CONCAT(dt.city_name, dt.sub_gt_name), CONCAT(dt.city_name, dt.sub_gt_name, dt.class_type_name)) AS title,
+                        </otherwise>
+                    </choose>
+                    SUM(IF(dt.term_code = #{term}, dt.val, 0)) AS first_val,
+                    SUM(IF(dt.term_code = #{diffTerm}, dt.val, 0)) AS second_val
+                    FROM (
+                    SELECT term_code, city_name, city_type, sub_gt_id, sub_gt_name, class_type, class_type_name,
+                    nps_ratio AS val, city_order_t, city_order
+                    FROM ads_bi_questionnaire_nps_score_fd
+                    WHERE term_code IN (#{term}, #{diffTerm})
+                    <choose>
+                        <!-- 未选择 学部和课态，需要区分视角 -->
+                        <when test="classForm == &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND (city_type <![CDATA[<>]]> #{city} OR city_code = '000') AND class_type = '0' AND sub_gt_id = '50'
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND (city_type = #{city} OR city_name = #{city}) AND class_type = '0' AND sub_gt_id = '50'
+                                    </otherwise>
+                                </choose>
+                            </if>
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND city_code = '000' AND class_type = '0'
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND city_name = #{city} AND class_type = '0'
+                                    </otherwise>
+                                </choose>
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND city_code = '000' AND sub_gt_id = '50'
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND city_name = #{city} AND sub_gt_id = '50'
+                                    </otherwise>
+                                </choose>
+                            </if>
+                        </when>
+                        <!-- 选择了学部 -->
+                        <when test="classForm == &quot;0&quot; and department != &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND city_type = 'T0' AND sub_gt_id = #{department} AND class_type = '0'
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND (city_type = #{city} OR city_name = #{city}) AND sub_gt_id = #{department} AND class_type = '0'
+                                    </otherwise>
+                                </choose>
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND city_code = '000' AND sub_gt_id = #{department}
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND city_name = #{city} AND sub_gt_id = #{department}
+                                    </otherwise>
+                                </choose>
+                            </if>
+                        </when>
+                        <!-- 选择了课态 -->
+                        <when test="classForm != &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND city_type = 'T0' AND sub_gt_id = '50' AND class_type = #{classForm}
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND (city_type = #{city} OR city_name = #{city}) AND sub_gt_id = '50' AND class_type = #{classForm}
+                                    </otherwise>
+                                </choose>
+                            </if>
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                <choose>
+                                    <!-- 全国 -->
+                                    <when test="city == &quot;T0&quot;">
+                                        AND city_code = '000' AND class_type = #{classForm}
+                                    </when>
+                                    <!-- 梯次 -->
+                                    <otherwise>
+                                        AND city_name = #{city} AND class_type = #{classForm}
+                                    </otherwise>
+                                </choose>
+                            </if>
+                        </when>
+                        <otherwise>
+                            <choose>
+                                <!-- 全国 -->
+                                <when test="city == &quot;T0&quot;">
+                                    AND city_code = '000' AND class_type = #{classForm} AND sub_gt_id = #{department}
+                                </when>
+                                <!-- 梯次 -->
+                                <otherwise>
+                                    AND (city_type = #{city} OR city_name = #{city}) AND class_type = #{classForm} AND sub_gt_id = #{department}
+                                </otherwise>
+                            </choose>
+                        </otherwise>
+                    </choose>
+                    ) AS dt
+                    <choose>
+                        <!-- 未选择 学部和课态，需要区分视角 -->
+                        <when test="classForm == &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                GROUP BY dt.city_name, dt.city_order_t, dt.city_order
+                                ORDER BY CAST(city_order_t AS SIGNED), CAST(city_order AS SIGNED)
+                            </if>
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                GROUP BY dt.sub_gt_id
+                                ORDER BY CAST(dt.sub_gt_id AS SIGNED)
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                GROUP BY dt.class_type
+                                ORDER BY CAST(dt.class_type AS SIGNED)
+                            </if>
+                        </when>
+                        <!-- 选择了学部 -->
+                        <when test="classForm == &quot;0&quot; and department != &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                GROUP BY dt.city_name, dt.city_order_t, dt.city_order
+                                ORDER BY CAST(city_order_t AS SIGNED), CAST(city_order AS SIGNED)
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                GROUP BY dt.class_type
+                                ORDER BY CAST(dt.class_type AS SIGNED)
+                            </if>
+                        </when>
+                        <!-- 选择了课态 -->
+                        <when test="classForm != &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 分校视角 -->
+                            <if test="showType == &quot;city&quot;">
+                                GROUP BY dt.city_name, dt.city_order_t, dt.city_order
+                                ORDER BY CAST(city_order_t AS SIGNED), CAST(city_order AS SIGNED)
+                            </if>
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                GROUP BY dt.sub_gt_id
+                                ORDER BY CAST(dt.sub_gt_id AS SIGNED)
+                            </if>
+                        </when>
+                        <otherwise>
+                            GROUP BY dt.city_name, dt.city_order_t, dt.city_order
+                            ORDER BY CAST(city_order_t AS SIGNED), CAST(city_order AS SIGNED)
+                        </otherwise>
+                    </choose>
+                ) AS ot
+            </when>
+            <!-- 分校 -->
+            <otherwise>
+                SELECT ot.title, ot.first_val, ot.second_val, (ot.second_val - ot.first_val) AS diff_val
+                FROM (
+                    SELECT
+                    <choose>
+                        <!-- 未选择 学部和课态，需要区分视角 -->
+                        <when test="classForm == &quot;0&quot; and department == &quot;50&quot;">
+                            <!-- 学部视角 -->
+                            <if test="showType == &quot;department&quot;">
+                                IF(dt.sub_gt_name = '全部', dt.city_name, sub_gt_name) AS title,
+                            </if>
+                            <!-- 课态视角 -->
+                            <if test="showType == &quot;classForm&quot;">
+                                IF(dt.class_type_name = '全部', dt.city_name, class_type_name) AS title,
+                            </if>
+                        </when>
+                        <!-- 选择了 学部 -->
+                        <when test="classForm == &quot;0&quot; and department != &quot;50&quot;">
+                            IF(dt.class_type_name = '全部', CONCAT(dt.city_name, IF(dt.sub_gt_name = '全部', '', dt.sub_gt_name)), CONCAT(dt.sub_gt_name, dt.class_type_name)) AS title,
+                        </when>
+                        <!-- 选择了 课态 -->
+                        <when test="classForm != &quot;0&quot; and department == &quot;50&quot;">
+                            IF(dt.sub_gt_name = '全部', CONCAT(dt.city_name, IF(dt.class_type_name = '全部', '', dt.class_type_name)), CONCAT(dt.sub_gt_name, dt.class_type_name)) AS title,
+                        </when>
+                        <!-- 选择了 学部 和 课态 -->
+                        <otherwise>
+                            CONCAT(dt.sub_gt_name, dt.class_type_name) AS title,
+                        </otherwise>
+                    </choose>
+                    SUM(IF(dt.term_code = '81', dt.val, 0)) AS first_val,
+                    SUM(IF(dt.term_code = '82', dt.val, 0)) AS second_val
+                    FROM (
+                        SELECT term_code, city_name, sub_gt_id, sub_gt_name, class_type, class_type_name, nps_ratio AS val, city_order_t, city_order
+                        FROM ads_bi_questionnaire_nps_score_fd
+                        WHERE term_code IN (#{term}, #{diffTerm})
+                        AND city_code = #{city}
+                        <choose>
+                            <!-- 未选择 学部和课态，需要区分视角 -->
+                            <when test="classForm == &quot;0&quot; and department == &quot;50&quot;">
+                                <!-- 学部视角 -->
+                                <if test="showType == &quot;department&quot;">
+                                    AND class_type = '0'
+                                </if>
+                                <!-- 课态视角 -->
+                                <if test="showType == &quot;classForm&quot;">
+                                    AND sub_gt_id = '50'
+                                </if>
+                            </when>
+                            <!-- 选择了 学部 -->
+                            <when test="classForm == &quot;0&quot; and department != &quot;50&quot;">
+                                AND (sub_gt_id = #{department} OR (sub_gt_id = '50' AND class_type = '0'))
+                            </when>
+                            <!-- 选择了 课态 -->
+                            <when test="classForm != &quot;0&quot; and department == &quot;50&quot;">
+                                AND (class_type = #{classForm} OR (sub_gt_id = '50' AND class_type = '0'))
+                            </when>
+                            <!-- 选择了 学部 和 课态 -->
+                            <otherwise>
+                                AND sub_gt_id = #{department} AND class_type = #{classForm}
+                            </otherwise>
+                        </choose>
+                    ) AS dt
+                    GROUP BY dt.sub_gt_id, dt.class_type
+                    ORDER BY CAST(dt.sub_gt_id AS SIGNED), CAST(dt.class_type AS SIGNED)
+                ) AS ot
+            </otherwise>
+        </choose>
+    </select>
+
+
+</mapper>
